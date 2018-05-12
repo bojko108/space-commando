@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - MainComputer
+  - StorageRoom
+  - Building
+  - MinimapIcon
+  - Ship
+  - BarrelEnd
+  - Commander
+  - Soldier
+  - Worker
+  - Tasks
+  - CommanderSpawnPoint
+  - SoldierSpawnPoint
+  - WorkerSpawnPoint
+  - Medpack
+  - MapProperties
+  - DarkMatterModule
+  - InfoText
+  - PauseMenu
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Buildings
+  - Minimap
+  - Enemies
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Minimap
+    uniqueID: 3609659837
+    locked: 0
+  - name: Buildings
+    uniqueID: 3004551745
+    locked: 0
