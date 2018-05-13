@@ -12,7 +12,7 @@ public static class Resources
         public const string MinimapCamera = "Minimap Camera";
 
         public static string PlayerDeadText = "You died!";
-        public static string FinalText = "You managed to escape!";
+        public static string FinalText = "You win!";
     }
 
     public static class Scenes

@@ -24456,6 +24456,11 @@ Prefab:
       propertyPath: m_ScaleInLightmap
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 23368497793762556, guid: 4e6bf53b888edb544b8a990aba584c27,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 15157d0978134764bbf273b7ed1a67df, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
   m_IsPrefabParent: 0
@@ -26831,7 +26836,23 @@ Prefab:
       propertyPath: DamageImage
       value: 
       objectReference: {fileID: 1960364116}
-    m_RemovedComponents: []
+    - target: {fileID: 45420863788581042, guid: 35bf87788dbce1c429037e88df6cea1c,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114125521330563898, guid: 35bf87788dbce1c429037e88df6cea1c,
+        type: 2}
+      propertyPath: m_JumpSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114125521330563898, guid: 35bf87788dbce1c429037e88df6cea1c,
+        type: 2}
+      propertyPath: m_RunSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114931592394075280, guid: 35bf87788dbce1c429037e88df6cea1c, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 35bf87788dbce1c429037e88df6cea1c, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &2133006494

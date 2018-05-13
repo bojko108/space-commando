@@ -2250,7 +2250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DetectDistance: 30
   WanderRadius: 10
-  WanderTime: 0
+  WanderTime: 2
   IsChasing: 0
   IsScared: 0
   Stop: 0

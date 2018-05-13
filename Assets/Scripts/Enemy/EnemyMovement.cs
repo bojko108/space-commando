@@ -114,9 +114,7 @@ public class EnemyMovement : MonoBehaviour
             // set a new random waypoint
             else
             {
-                
-
-                if (this.timer >= this.WanderTime)
+                if (this.timer >= this.WanderTime && this.HasReachedDestination())
                 {
                     // set a new random destination point
                     Vector3 destination = this.GetNavMeshTargetPosition(this.transform.position, this.WanderRadius, NavMesh.AllAreas);
@@ -130,6 +128,11 @@ public class EnemyMovement : MonoBehaviour
         }
 
         this.agent.enabled = false;
+    }
+
+    private bool HasReachedDestination()
+    {
+        return this.agent.remainingDistance <= this.agent.stoppingDistance;
     }
 
     /// <summary>
