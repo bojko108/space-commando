@@ -90,6 +90,6 @@ public class EnemyHealth : MonoBehaviour
         this.enemyAudio.loop = false;
         this.enemyAudio.Play();
         
-        Destroy(this.gameObject, 20f);
+        Destroy(this.gameObject, 10f);
     }
 }

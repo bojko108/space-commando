@@ -1,6 +1,6 @@
 # Space commando
 
-The game is designed for standalone build. There are options for saving and loading game progress. Each character's position, health and movement mode along with finished tasks by the player are saved and then can be loaded.
+The game is designed for standalone build. There are options for saving and loading game progress. Each character's position, health and movement mode along with finished tasks by the player can be saved and loaded later.
 
 ## Contents
 
@@ -52,24 +52,23 @@ Options for:
 
 * Start a new game
 * Continue from last save
-* View controls - check keyboard controls
+* Delete save
+* View controls
 * Quit game
 
 ### Gameplay
 
 After a fierce space battle the player manages to escape, but his spaceship is badly damaged. His only chance is to look for parts to repair the ship in an old abandoned base, located on a nearby planet. The problem is the base has been taken over by hostile aliens.
 
-The player landed his spaceship on a remote planet and found an old base and now he is searching for supplies and spare parts for his ship.
+The player lands his spaceship near the old base and now is searching for supplies and spare parts for to repair it. Player's ship has a broken Dark Matter Module, which can be found in the Storage Room. The game starts at this point.
 
-Player's ship has a broken Dark Matter Module, which can be found in the Storage Room.
-
-When the game starts the player is running out of oxygen and has to find the Main Control Room to turn base life support systems back on. The access to the Main Computer is blocked by a password. The player has to decipher the password in order to login, turn life support systems back on and find the Storage Room location. When the player is near the main computer, the game waits for him to enter the password. After the player has the password it's oxygen level is set to full and no longer decreases. The minimap is also updated: `Buildings` layer and Storage Room are added to the map. All enemies of type `Soldier` will be set in `Chasing` mode.
+When the game starts the player is running out of oxygen and has to find the Main Control Room to turn Base Life Support Systems back on. The access to the Main Computer is blocked by a password. The player has to decipher the password in order to login, turn Life Support Systems back on and find the Storage Room location. When the player is near the Main Computer, the game waits for him to enter the password. After the player has the password it's oxygen level is set to full and no longer decreases. The minimap is also updated: `Buildings` layer and Storage Room are added to the map. All enemies of type `Soldier` will be set in `Chasing` mode.
 
 After the player locates and takes the Dark Matter Module he can return and repair the Spaceship and leave the planet for good. At this point all commanders will be set in `Chasing` mode.
 
-When the player have the Dark Matter Module and he is near the spaceship the game will end.
+When the player have the Dark Matter Module and is near the spaceship he can start repairing it. In order to do that he must stay for at least 10 seconds near the ship or the process will be interrupted.
 
-During the entire game the player has to deal with hostile aliens which will try to kill him. There are three types of enemies, described bellow.
+During the entire game the player has to deal with hostile aliens which will try to kill him.
 
 # Game setup
 
@@ -80,38 +79,42 @@ During the entire game the player has to deal with hostile aliens which will try
 * Health bar - shows current health level
 * Tasks: shown when `TAB` key is pressed - list of tasks which the player has to complete
 * Pause Menu: shown when `Escape` key is pressed - pauses the game and displays a menu with several options:
-  * `Resume` - resums the game
+  * `Resume` - resumes the game
   * `Save and Exit` - saves the game at current state and returns to the main menu
-  * `Main Menu` - closes the game and returnes to the main menu - current progress is lost
-  * `Quit` - quits the game
+  * `Main Menu` - closes the game and returnes to the main menu - current progress will be lost
+  * `Quit` - quits the game - current progress will be lost
 
 ## Environment setup
 
-* Real buildings imported with a script
-* Attach `MapProperties` script to the main camera (used for storing the map origin coordinates and scale)
+* Real buildings imported with a script - source spatil data is stored in `Assets/Maps/Level3.txt` file
 * Import map data using the script for importing from `GeoJSON` asset:
-  * The unique ID is stored in `osm_id` property - The extrusion parameter is stored in `height` property - Set all buildings to layer `Buildings` - Add Mesh Collider using the script for generating mesh colliders
-  * Add Material using a script - All buildings and base border are set to `static` - Create ground object and build the Nav Mesh using the base border
+  * The unique ID is stored in `osm_id` property
+  * The extrusion parameter is stored in `height` property
+  * Put all buildings in layer `Buildings`
+  * Add Mesh Collider using the script for generating mesh colliders
+  * Add Material using a script
+  * All buildings and base border are set to `static`
+  * Create ground object and build the NavMesh
 
 ## Player
 
 Imported from Unity Assets - FPS Player Character.
 
-* Add gun and body - the game is using Raycasts to fire towards the enemies
-* Add second camera for the minimap (orthographic projection) - renders data only from layers `Minimap` and `Buildings`.
+* Gun and Body - the game is using Raycasts to fire towards and harm the enemies
+* Second camera for the minimap (orthographic projection) - renders data only from layers `Minimap` and `Buildings`.
 * Sphere for the minimap (layer must be set to `minimap`) - it's redered only in the minimap
 * Player components:
   * Audio Source
   * Rigidbody
   * Character Controller
   * First Person Controller Script
-  * `PlayerShootingScript` (attached to the gun) - responsible for shooting logic - uses Raycasts and Physics to fire towards and harm the enemies:
+  * `PlayerShootingScript` (attached to the gun) - responsible for shooting logic:
     * Damage per shot: 20 - damage to the enemy when shot
     * Fire rate: 0.2
     * Range: 200
-  * `PlayerHealthScript` - responsible for managing player's health and oxygen levels. Player's oxygen level is decreasing (from `80` to `0`) until the player activates the life support systems. `0` level of oxygen will decrease player's blood level. While the volume of oxygen is running low, the player's camera smooth parameter will also decrease (from `5` to `1`):
+  * `PlayerHealthScript` - responsible for managing player's health and oxygen levels. Player's oxygen level will drop down (from `80` to `0`) until the player activates the Life Support Systems. `0` level of oxygen will decrease player's blood level. While the volume of oxygen is running low, the player's camera smooth parameter will also decrease (from `5` to `1`):
     * Health: 200 - starting health level
-    * Oxygen: 80 - starting oxygen level - will drop down until the life support systems are back on
+    * Oxygen: 80 - starting oxygen level
     * Walking speed: 5
     * Running speed: 15
   * `RadarScript`: responsible for drawing minimap on the screen
@@ -119,16 +122,14 @@ Imported from Unity Assets - FPS Player Character.
 
 ## Enemies
 
-There are three types of enemies moving around the base using NavMesh.
+There are three types of enemies moving around the base using NavMesh. If the player is close enough to be detected or is shooting at them, they will attack.
 
 ### Commander
 
-Will be set in attack mode when the player has the Dark Matter Module:
-
-* Components:
+Components:
   * Animator - responsible for managing animation states. There are several states:
     * `walk` - default
-    * `attack` - triggered when the player is in range for attac
+    * `attack` - triggered when the player is in range for attack
     * `death` - triggered when the enemy is dead
   * Audio Source
   * NavMesh Agent - for navigating around the base
@@ -137,7 +138,7 @@ Will be set in attack mode when the player has the Dark Matter Module:
   * Sphere collider - trigger - responsible for detecting the player and switching to attack mode
   * `EnemyMovementScript` - responsible for moving the enemy - setting destinations on the NavMesh
     * Detect distance: 60 - minimum distance to detect the player
-    * Wander radius: 70 - maximum travel distance for new destinations
+    * Wander radius: 300 - maximum travel distance for new destinations
     * Wander time: 0 - time to wait before a new destination is set
     * Is Chasing: false - is the enemy currently chasing the player or not
     * Is Scared: false - is the enemy currently running away from the player
@@ -153,9 +154,7 @@ Will be set in attack mode when the player has the Dark Matter Module:
 
 ### Soldier
 
-Will attack only when the player is close enough to be detected or when the player is shooting at them:
-
-* Components:
+Components:
   * Animator - responsible for managing animation states. There are several states:
     * `walk` - default
     * `walk-attack` - triggered when the player is in range
@@ -186,7 +185,7 @@ Will attack only when the player is close enough to be detected or when the play
 
 Workers are spawn only from two points: one in the Main Control Room and another in the Storage Room - they will not attack but run away from the player:
 
-* Components:
+Components:
   * Animator - responsible for managing animation states. There are several states:
     * `walk` - default
     * `run` - triggered when the player is in range
@@ -212,27 +211,27 @@ Workers are spawn only from two points: one in the Main Control Room and another
 
 ## Main Control Room
 
-The player needs to find the passsword in order to login and switch base life support systems back on.
+The player needs to find the passsword in order to login and switch Base Life Support Systems back on.
 
-* Components:
+Components:
   * Audio Source
   * Sphere collider - trigger
   * `TasksManagerScript` - responsible for emitting events
 
 ## Storage Room
 
-The Dark Matter Module is located in that room
+The Dark Matter Module is located in that room.
 
-* Components:
+Components:
   * Audio Source
   * Sphere collider - trigger
   * `TasksManagerScript` - responsible for emitting events
 
 ## Spaceship
 
-When the player is near and has the Dark Matter Module the game will END.
+When the player is near and has the Dark Matter Module he can start repairing it. In order to do that he must stay for at least 10 seconds near the ship or the process will be interrupted.
 
-* Components:
+Components:
   * Audio Source
   * Sphere collider - trigger
   * `TasksManagerScript` - responsible for emitting events
@@ -242,7 +241,7 @@ When the player is near and has the Dark Matter Module the game will END.
 
 There are several medpacks around the base. When the player walks through them his health is reset to it's starting level. The medpacks are also shown on the radar.
 
-* Components:
+Components:
   * Sphere collider - trigger
   * `MedpackScript` - responsible for restoring player's health
 
@@ -280,19 +279,19 @@ Responsible for emitting various game events.
 
 ## SaveLoad
 
-Responsible for saving and loading game progress.
+Responsible for saving and loading game progress and characters.
 
 ### GameSaveLoad
 
 This script is used for saving and loading game progress.
 
 * `LoadSavedGame` - static property set from the main menu
-* `IsPlayerDead` - used when loading outro scene
+* `IsPlayerDead` - static property used when loading outro scene
 * `FileName` - save file name
 
 ### GameProgress
 
-For saving game progress:
+Game progress parameters:
 
 * `IsPlayerDead`
 * `IsMainControlRoomFound`

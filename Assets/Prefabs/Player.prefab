@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 20598625864781282}
   - component: {fileID: 81707684939754968}
   - component: {fileID: 124618314355590166}
-  - component: {fileID: 114931592394075280}
   - component: {fileID: 45420863788581042}
   m_Layer: 0
   m_Name: Player Camera
@@ -775,7 +774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IsWalking: 0
   m_WalkSpeed: 6
-  m_RunSpeed: 15
+  m_RunSpeed: 16
   m_RunstepLenghten: 0.7
   m_JumpSpeed: 10
   m_StickToGroundForce: 10
@@ -923,20 +922,6 @@ MonoBehaviour:
   Range: 200
   lazerPrefab: {fileID: 1684606925262778, guid: c7b004c5d0f86454eb8739d16f5a4d86,
     type: 2}
---- !u!114 &114931592394075280
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1038522505339416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbd77a6066c135d459500e26c8c7da1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HorizontalScale: 1
-  VerticalScale: 1
-  Origin: {x: 0, y: 0, z: 0}
 --- !u!124 &124217333737057606
 Behaviour:
   m_ObjectHideFlags: 1

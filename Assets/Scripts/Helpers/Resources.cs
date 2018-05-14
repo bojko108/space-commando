@@ -28,9 +28,10 @@ public static class Resources
     public static class Messages
     {
         public const string EnterPassword = "Enter password";
-        public const string GetItem = "Press F to get the part";
+        public const string GetItem = "Press F to get Dark Matter Module";
         public const string RepairShip = "Press F to repair Spaceship";
         public const string FindDarkMatterModule = "Find Dark Matter Module to repair Spaceship!";
+        public const string RepairingShip = "Repairing ship. Stay close to avoid process interruption!"; 
     }
 
     public static class Events
@@ -89,5 +90,6 @@ public static class Resources
         public const string DarkMatterModule = "DarkMatterModule";
         public const string InfoText = "InfoText";
         public const string PauseMenu = "PauseMenu";
+        public const string RepairSlider = "RepairSlider";
     }
 }

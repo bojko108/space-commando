@@ -21,7 +21,7 @@ public class GameManagerScript : MonoBehaviour
     private GameObject pauseMenu;
     private GameObject tasks;
     private GameObject player;
-    private GameObject ship;
+    private BrokenEngine shipEngine;
 
     // displays important messages to the player
     private GameObject infoText;
@@ -33,6 +33,7 @@ public class GameManagerScript : MonoBehaviour
     private bool gameIsPaused = false;
     // tasks will be displayed while this is set to true
     private bool displayTasks = false;
+    private Slider repairSlider;
 
     // game event listeners
     private UnityAction onPlayerDead;
@@ -56,11 +57,13 @@ public class GameManagerScript : MonoBehaviour
         this.RegisterEvents();
 
         this.player = GameObject.FindGameObjectWithTag(Resources.Tags.Player);
-        this.ship = GameObject.FindGameObjectWithTag(Resources.Tags.Ship);
+        this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<BrokenEngine>();
         this.tasks = GameObject.FindGameObjectWithTag(Resources.Tags.Tasks);
         this.infoText = GameObject.FindGameObjectWithTag(Resources.Tags.InfoText);
         this.pauseMenu = GameObject.FindGameObjectWithTag(Resources.Tags.PauseMenu);
         this.pauseMenu.SetActive(false);
+        this.repairSlider = GameObject.FindGameObjectWithTag(Resources.Tags.RepairSlider).GetComponent<Slider>();
+        this.repairSlider.gameObject.SetActive(false);
 
         Transform[] commandersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.CommanderSpawnPoint), item => item.transform);
         Transform[] soldiersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.SoldierSpawnPoint), item => item.transform);
@@ -69,7 +72,7 @@ public class GameManagerScript : MonoBehaviour
 
         // load saved game or start new...
         this.ProgressInGame = (GameSaveLoad.LoadSavedGame ? GameSaveLoad.Load() : new GameProgress());
-        
+
         this.ReadGameProgress(GameSaveLoad.LoadSavedGame);
     }
 
@@ -119,13 +122,13 @@ public class GameManagerScript : MonoBehaviour
         // and to hide info text
         this.onPlayerExitedImportantArea = new UnityAction(this.OnPlayerExitedImportantArea);
         EventManager.On(Resources.Events.PlayerExitedImportantArea, this.onPlayerExitedImportantArea);
-        
+
         this.onMainComputerFound = new UnityAction(this.OnMainComputerFound);
         EventManager.On(Resources.Events.MainComputerFound, this.onMainComputerFound);
-        
+
         this.onStorageRoomFound = new UnityAction(this.OnStorageRoomFound);
         EventManager.On(Resources.Events.StorageRoomFound, this.onStorageRoomFound);
-        
+
         this.onDarkMatterModuleFound = new UnityAction(this.OnDarkMatterModuleFound);
         EventManager.On(Resources.Events.DarkMatterModuleFound, this.onDarkMatterModuleFound);
 
@@ -156,7 +159,7 @@ public class GameManagerScript : MonoBehaviour
     private void OnGameFinish()
     {
         //Debug.Log("END GAME");
-        
+
         Time.timeScale = 1f;
         SceneManager.LoadScene(Resources.Scenes.Outro);
     }
@@ -194,7 +197,7 @@ public class GameManagerScript : MonoBehaviour
         this.player.GetComponent<FirstPersonController>().enabled = false;
         this.player.GetComponentInChildren<PlayerShooting>().enabled = false;
     }
-    
+
     private void OnGoToMenu()
     {
         Time.timeScale = 1f;
@@ -279,7 +282,7 @@ public class GameManagerScript : MonoBehaviour
         if (this.ProgressInGame.IsDarkMatterModuleFound == false)
         {
             this.DisplayInfoText(Resources.Messages.GetItem);
-            
+
             // wait for user to get the dark matter module
             StartCoroutine(this.WaitForUserToGetTheItem());
         }
@@ -365,12 +368,12 @@ public class GameManagerScript : MonoBehaviour
                 Player savedPlayer = this.ProgressInGame.Player as Player;
                 this.player.transform.position = savedPlayer.Position.ToVector3();
                 this.player.transform.rotation = Quaternion.Euler(savedPlayer.Rotation.ToVector3());
-                
+
                 // update initial mouse look parameters with the saved ones
                 this.player.GetComponent<FirstPersonController>().InitMouseLook(this.player.transform);
 
                 this.player.GetComponent<PlayerHealth>().SetLevels(savedPlayer.HealthLevel, savedPlayer.OxygenLevel);
-                
+
                 // if the player has found hte main computer password
                 this.player.GetComponent<PlayerHealth>().HaveOxygen = savedPlayer.HaveOxygen;
             }
@@ -405,7 +408,7 @@ public class GameManagerScript : MonoBehaviour
 
             if (this.ProgressInGame.IsSpaceshipRepaired)
             {
-                this.RepairShip();
+                this.shipEngine.Repaired();
                 EventManager.Emit(Resources.Events.GameFinish);
             }
 
@@ -475,15 +478,6 @@ public class GameManagerScript : MonoBehaviour
     }
 
     /// <summary>
-    /// repairs spaceship
-    /// </summary>
-    private void RepairShip()
-    {
-        // repair spaceship
-        this.ship.GetComponentInChildren<BrokenEngine>().Repaired();
-    }
-
-    /// <summary>
     /// sets enemies in chasing mode
     /// </summary>
     /// <param name="tag">type of enemies to update</param>
@@ -510,7 +504,7 @@ public class GameManagerScript : MonoBehaviour
         this.tasks.transform.localScale = Vector3.one;
 
         yield return new WaitForSeconds(seconds);
-        
+
         this.displayTasks = false;
         this.tasks.transform.localScale = Vector3.zero;
     }
@@ -558,7 +552,7 @@ public class GameManagerScript : MonoBehaviour
         // while the player is near the dark matter module
         while (this.playerIsNear)
         {
-            if (Input.GetKey(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 this.PlayerHaveDarkMatterModule();
 
@@ -572,7 +566,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     /// <summary>
-    /// waits for the player to repair the spaceship
+    /// waits for the player to start repairing the spaceship
     /// </summary>
     /// <returns></returns>
     private IEnumerator WaitForUserToRepairTheShip()
@@ -580,24 +574,52 @@ public class GameManagerScript : MonoBehaviour
         // while the player is near the spaceship
         while (this.playerIsNear)
         {
-            if (Input.GetKey(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                this.RepairShip();
+                this.DisplayInfoText(Resources.Messages.RepairingShip);
 
-                this.HideInfoText();
+                yield return StartCoroutine(this.RepairingShip());
 
-                // wait 9s because of the jet_engine_repaired sound
-                yield return new WaitForSeconds(9f);
-
-                EventManager.Emit(Resources.Events.GameFinish);
                 break;
             }
 
             yield return null;
         }
 
-        // cancel repair???
-
         this.HideInfoText();
+    }
+
+    /// <summary>
+    /// wait to repair spaceship
+    /// </summary>
+    private IEnumerator RepairingShip()
+    {
+        // set to repaired: play engine sound....
+        this.shipEngine.Repaired();
+        
+        this.repairSlider.gameObject.SetActive(true);
+        
+        // while the player is near the spaceship
+        while (this.playerIsNear)
+        {
+            if (this.repairSlider.value < this.repairSlider.maxValue)
+            {
+                this.repairSlider.value += 1;
+                yield return new WaitForSeconds(1f);
+            }
+            else
+            {
+                this.repairSlider.gameObject.SetActive(false);
+
+                EventManager.Emit(Resources.Events.GameFinish);
+
+                break;
+            }
+        }
+
+        this.shipEngine.NotRepaired();
+        
+        this.repairSlider.value = 0;
+        this.repairSlider.gameObject.SetActive(false);
     }
 }

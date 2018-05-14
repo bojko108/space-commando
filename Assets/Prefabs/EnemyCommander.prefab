@@ -1660,7 +1660,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 52a431fea9e650f41b85428e53bd3681, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1779,7 +1779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DetectDistance: 60
   WanderRadius: 300
-  WanderTime: 2
+  WanderTime: 0
   IsChasing: 0
   IsScared: 0
   Stop: 0
