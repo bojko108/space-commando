@@ -45,6 +45,8 @@ public class EnemyHealth : MonoBehaviour
     /// <param name="hitPoint">Bullet hit point</param>
     public void TakeDamage(int amount, bool attack, bool runAway, Vector3 hitPoint)
     {
+        StartCoroutine(this.HandleHit());
+
         this.enemyMovement.IsChasing = attack;
         this.enemyMovement.IsScared = runAway;
 
@@ -62,6 +64,13 @@ public class EnemyHealth : MonoBehaviour
         {
             this.Dead();
         }
+    }
+
+    private IEnumerator HandleHit()
+    {
+        this.animator.SetBool("IsHit", true);
+        yield return new WaitForSeconds(1f);
+        this.animator.SetBool("IsHit", false);
     }
 
     public void SetHealth(int health)

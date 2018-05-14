@@ -327,8 +327,8 @@ public class GameManagerScript : MonoBehaviour
         this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.StorageRoom));
         this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Buildings);
 
-        // set all soldiers in chasing mode after 20 seconds
-        StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Soldier, 20f));
+        // increase detect distance for soldiers
+        this.IncreaseDetectDistance(Resources.Tags.Soldier, 3f);
     }
 
     /// <summary>
@@ -340,8 +340,11 @@ public class GameManagerScript : MonoBehaviour
         this.ProgressInGame.IsDarkMatterModuleFound = true;
         this.FinishTask(Resources.Tasks.FindDarkMatterModule);
 
-        // set all commanders in chasing mode
+        // set commanders in attack mode
         StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Commander, 0f));
+
+        // set soldierss in attack mode
+        StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Soldier, 0f));
     }
 
     /// <summary>
@@ -478,6 +481,21 @@ public class GameManagerScript : MonoBehaviour
     }
 
     /// <summary>
+    /// increases enemies detect distance
+    /// </summary>
+    /// <param name="tag">type of enemies to update</param>
+    /// <param name="factor">increase factor</param>
+    /// <returns></returns>
+    private void IncreaseDetectDistance(string tag, float factor = 1)
+    {
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag(tag))
+        {
+            //enemy.GetComponent<EnemyMovement>().IsChasing = true;
+            enemy.GetComponent<EnemyMovement>().DetectDistance *= factor;
+        }
+    }
+
+    /// <summary>
     /// sets enemies in chasing mode
     /// </summary>
     /// <param name="tag">type of enemies to update</param>
@@ -596,9 +614,9 @@ public class GameManagerScript : MonoBehaviour
     {
         // set to repaired: play engine sound....
         this.shipEngine.Repaired();
-        
+
         this.repairSlider.gameObject.SetActive(true);
-        
+
         // while the player is near the spaceship
         while (this.playerIsNear)
         {
@@ -611,15 +629,35 @@ public class GameManagerScript : MonoBehaviour
             {
                 this.repairSlider.gameObject.SetActive(false);
 
-                EventManager.Emit(Resources.Events.GameFinish);
+                this.DisplayInfoText(Resources.Messages.BoardShip);
+
+                yield return StartCoroutine(this.WaitForUserToGetOnBoard());
+
+                this.HideInfoText();
 
                 break;
             }
         }
 
         this.shipEngine.NotRepaired();
-        
+
         this.repairSlider.value = 0;
         this.repairSlider.gameObject.SetActive(false);
+    }
+
+    private IEnumerator WaitForUserToGetOnBoard()
+    {
+        // while the player is near the spaceship
+        while (this.playerIsNear)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                EventManager.Emit(Resources.Events.GameFinish);
+
+                break;
+            }
+
+            yield return null;
+        }
     }
 }

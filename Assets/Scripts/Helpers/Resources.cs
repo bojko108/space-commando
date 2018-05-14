@@ -31,7 +31,8 @@ public static class Resources
         public const string GetItem = "Press F to get Dark Matter Module";
         public const string RepairShip = "Press F to repair Spaceship";
         public const string FindDarkMatterModule = "Find Dark Matter Module to repair Spaceship!";
-        public const string RepairingShip = "Repairing ship. Stay close to avoid process interruption!"; 
+        public const string RepairingShip = "Repairing ship. Stay close to avoid process interruption!";
+        public const string BoardShip = "Press F to get on board";
     }
 
     public static class Events

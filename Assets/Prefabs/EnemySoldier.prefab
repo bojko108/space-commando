@@ -1773,7 +1773,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cfaa2e6db30d4a4499e66dcf9aeaf844, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.6
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1878,7 +1878,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingHealth: 100
   CurrentHealth: 0
-  DeathSound: {fileID: 8300000, guid: 13dc52a8e9b5b400881475d33a24f719, type: 3}
+  DeathSound: {fileID: 8300000, guid: 95165564f212043e0ad4f202bba4b2fb, type: 3}
 --- !u!114 &114276057026767838
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1891,13 +1891,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DetectDistance: 50
-  WanderRadius: 100
+  WanderRadius: 60
   WanderTime: 3
   IsChasing: 0
   IsScared: 0
   Stop: 0
   WalkSpeed: 5
-  RunSpeed: 15
+  RunSpeed: 10
 --- !u!114 &114340385154915102
 MonoBehaviour:
   m_ObjectHideFlags: 1
