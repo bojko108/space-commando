@@ -452,11 +452,11 @@ public class GameManagerScript : MonoBehaviour
                     enemyGO.GetComponent<EnemyMovement>().Stop = enemy.Stop;
                 }
 
-                if (this.ProgressInGame.IsDarkMatterModuleFound == false)
-                {
-                    this.ManageEnemies.SpawnBaseCommanders();
-                }
-                // else: base commanders are already restored from the saved data
+                //if (this.ProgressInGame.IsDarkMatterModuleFound == false)
+                //{
+                //    this.ManageEnemies.SpawnBaseCommanders();
+                //}
+                //// else: base commanders are already restored from the saved data
             }
             else
             {
