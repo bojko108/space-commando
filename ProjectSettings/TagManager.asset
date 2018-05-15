@@ -22,6 +22,9 @@ TagManager:
   - DarkMatterModule
   - InfoText
   - PauseMenu
+  - RepairSlider
+  - BaseCommander
+  - BaseCommanderSpawnPoint
   layers:
   - Default
   - TransparentFX

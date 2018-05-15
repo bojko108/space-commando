@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrokenEngine : MonoBehaviour
+public class ShipEngineScript : MonoBehaviour
 {
     public AudioClip BrokenEngineSound;
     public AudioClip RepairedEngineSound;

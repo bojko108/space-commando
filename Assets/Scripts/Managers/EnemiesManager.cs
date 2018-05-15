@@ -8,6 +8,8 @@ using Assets.Scripts.SaveLoad;
 public class EnemiesManager
 {
     [SerializeField]
+    public int NumberOfBaseCommanders;
+    [SerializeField]
     public int NumberOfCommanders;
     [SerializeField]
     public int NumberOfSoldiers;
@@ -15,34 +17,48 @@ public class EnemiesManager
     public int NumberOfWorkers;
 
     [SerializeField]
+    public GameObject BaseCommanderPrefab;
+    [SerializeField]
     public GameObject CommanderPrefab;
     [SerializeField]
     public GameObject SoldierPrefab;
     [SerializeField]
     public GameObject WorkerPrefab;
 
-    private List<Transform> commanderSpawnPoints;
+    private List<Transform> baseCommandersSpawnPoints;
+    private List<Transform> commandersSpawnPoints;
     private List<Transform> soldiersSpawnPoints;
     private List<Transform> workersSpawnPoints;
 
     /// <summary>
     /// sets all spawn points available for spawning enemies
     /// </summary>
+    /// <param name="baseCommandersSpawnPoints"></param>
     /// <param name="commandersSpawnPoints"></param>
     /// <param name="soldiersSpawnPoints"></param>
     /// <param name="workersSpawnPoints"></param>
-    public void SetSpawnPoints(Transform[] commandersSpawnPoints, Transform[] soldiersSpawnPoints, Transform[] workersSpawnPoints)
+    public void SetSpawnPoints(Transform[] baseCommandersSpawnPoints, Transform[] commandersSpawnPoints, Transform[] soldiersSpawnPoints, Transform[] workersSpawnPoints)
     {
-        this.commanderSpawnPoints = new List<Transform>();
-        this.commanderSpawnPoints.AddRange(commandersSpawnPoints);
+        this.baseCommandersSpawnPoints = new List<Transform>();
+        this.baseCommandersSpawnPoints.AddRange(baseCommandersSpawnPoints);
+        this.commandersSpawnPoints = new List<Transform>();
+        this.commandersSpawnPoints.AddRange(commandersSpawnPoints);
         this.soldiersSpawnPoints = new List<Transform>();
         this.soldiersSpawnPoints.AddRange(soldiersSpawnPoints);
         this.workersSpawnPoints = new List<Transform>();
         this.workersSpawnPoints.AddRange(workersSpawnPoints);
     }
 
+    public void SpawnBaseCommanders()
+    {
+        for (int i = 0; i < this.NumberOfBaseCommanders; i++)
+        {
+            this.SpawnBaseCommander();
+        }
+    }
+
     /// <summary>
-    /// spawn all commanders
+    /// spawn all base commanders
     /// </summary>
     public void SpawnCommanders()
     {
@@ -75,12 +91,21 @@ public class EnemiesManager
     }
 
     /// <summary>
+    /// spawn a base commanders
+    /// </summary>
+    public void SpawnBaseCommander()
+    {
+        int index = UnityEngine.Random.Range(0, this.baseCommandersSpawnPoints.Count);
+        this.CreateEnemy(this.BaseCommanderPrefab, this.baseCommandersSpawnPoints[index]);
+    }
+
+    /// <summary>
     /// spawn a commanders
     /// </summary>
     public void SpawnCommander()
     {
-        int index = UnityEngine.Random.Range(0, this.commanderSpawnPoints.Count);
-        this.CreateEnemy(this.CommanderPrefab, this.commanderSpawnPoints[index]);
+        int index = UnityEngine.Random.Range(0, this.commandersSpawnPoints.Count);
+        this.CreateEnemy(this.CommanderPrefab, this.commandersSpawnPoints[index]);
     }
 
     /// <summary>
@@ -125,6 +150,7 @@ public class EnemiesManager
 
         switch (savedEnemy.Tag)
         {
+            case Resources.Tags.BaseCommander: return this.CreateEnemy(this.BaseCommanderPrefab, transform);
             case Resources.Tags.Commander: return this.CreateEnemy(this.CommanderPrefab, transform);
             case Resources.Tags.Soldier: return this.CreateEnemy(this.SoldierPrefab, transform);
             case Resources.Tags.Worker: return this.CreateEnemy(this.WorkerPrefab, transform);

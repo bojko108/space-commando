@@ -10,7 +10,7 @@ public static class Resources
         public const string DesktopScreen = "DesktopScreen";
         public const string Engine = "Engine";
         public const string MinimapCamera = "Minimap Camera";
-
+        public const string MinimapIcon = "Minimap Icon";
         public static string PlayerDeadText = "You died!";
         public static string FinalText = "You win!";
     }
@@ -80,10 +80,12 @@ public static class Resources
         public const string MinimapIcon = "MinimapIcon";
         public const string Ship = "Ship";
         public const string BarrelEnd = "BarrelEnd";
+        public const string BaseCommander = "BaseCommander";
         public const string Commander = "Commander";
         public const string Soldier = "Soldier";
         public const string Worker = "Worker";
         public const string Tasks = "Tasks";
+        public const string BaseCommanderSpawnPoint = "BaseCommanderSpawnPoint";
         public const string CommanderSpawnPoint = "CommanderSpawnPoint";
         public const string SoldierSpawnPoint = "SoldierSpawnPoint";
         public const string WorkerSpawnPoint = "WorkerSpawnPoint";

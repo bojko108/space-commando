@@ -21,7 +21,7 @@ public class GameManagerScript : MonoBehaviour
     private GameObject pauseMenu;
     private GameObject tasks;
     private GameObject player;
-    private BrokenEngine shipEngine;
+    private ShipEngineScript shipEngine;
 
     // displays important messages to the player
     private GameObject infoText;
@@ -33,6 +33,7 @@ public class GameManagerScript : MonoBehaviour
     private bool gameIsPaused = false;
     // tasks will be displayed while this is set to true
     private bool displayTasks = false;
+    private bool baseCommandersSpawned = false;
     private Slider repairSlider;
 
     // game event listeners
@@ -57,7 +58,7 @@ public class GameManagerScript : MonoBehaviour
         this.RegisterEvents();
 
         this.player = GameObject.FindGameObjectWithTag(Resources.Tags.Player);
-        this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<BrokenEngine>();
+        this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<ShipEngineScript>();
         this.tasks = GameObject.FindGameObjectWithTag(Resources.Tags.Tasks);
         this.infoText = GameObject.FindGameObjectWithTag(Resources.Tags.InfoText);
         this.pauseMenu = GameObject.FindGameObjectWithTag(Resources.Tags.PauseMenu);
@@ -65,10 +66,11 @@ public class GameManagerScript : MonoBehaviour
         this.repairSlider = GameObject.FindGameObjectWithTag(Resources.Tags.RepairSlider).GetComponent<Slider>();
         this.repairSlider.gameObject.SetActive(false);
 
+        Transform[] baseCommandersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.BaseCommanderSpawnPoint), item => item.transform);
         Transform[] commandersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.CommanderSpawnPoint), item => item.transform);
         Transform[] soldiersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.SoldierSpawnPoint), item => item.transform);
         Transform[] workersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.WorkerSpawnPoint), item => item.transform);
-        this.ManageEnemies.SetSpawnPoints(commandersSpawnPoints, soldiersSpawnPoints, workersSpawnPoints);
+        this.ManageEnemies.SetSpawnPoints(baseCommandersSpawnPoints, commandersSpawnPoints, soldiersSpawnPoints, workersSpawnPoints);
 
         // load saved game or start new...
         this.ProgressInGame = (GameSaveLoad.LoadSavedGame ? GameSaveLoad.Load() : new GameProgress());
@@ -328,23 +330,36 @@ public class GameManagerScript : MonoBehaviour
         this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Buildings);
 
         // increase detect distance for soldiers
-        this.IncreaseDetectDistance(Resources.Tags.Soldier, 3f);
+        this.IncreaseDetectDistance(Resources.Tags.Soldier, 2f);
     }
 
     /// <summary>
     /// executed when the player has the dark matter module
     /// </summary>
-    private void PlayerHaveDarkMatterModule()
+    private void PlayerHaveDarkMatterModule(bool savedGame)
     {
         GameObject.FindGameObjectWithTag(Resources.Tags.DarkMatterModule).SetActive(false);
         this.ProgressInGame.IsDarkMatterModuleFound = true;
         this.FinishTask(Resources.Tasks.FindDarkMatterModule);
 
+        // increase detect distance for commanders
+        this.IncreaseDetectDistance(Resources.Tags.Commander, 2f);
+
+        // increase detect distance for soldiers
+        this.IncreaseDetectDistance(Resources.Tags.Soldier, 2f);
+
+        if (savedGame == false)
+        {
+            // spawn base commanders
+            this.ManageEnemies.SpawnBaseCommanders();
+        }
+        // else: will be restored from the saved data
+
         // set commanders in attack mode
-        StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Commander, 0f));
+        //StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Commander, 0f));
 
         // set soldierss in attack mode
-        StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Soldier, 0f));
+        //StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Soldier, 0f));
     }
 
     /// <summary>
@@ -406,7 +421,7 @@ public class GameManagerScript : MonoBehaviour
             if (this.ProgressInGame.IsDarkMatterModuleFound)
             {
                 EventManager.Emit(Resources.Events.DarkMatterModuleFound);
-                this.PlayerHaveDarkMatterModule();
+                this.PlayerHaveDarkMatterModule(savedGame);
             }
 
             if (this.ProgressInGame.IsSpaceshipRepaired)
@@ -436,6 +451,12 @@ public class GameManagerScript : MonoBehaviour
                     enemyGO.GetComponent<EnemyMovement>().IsScared = enemy.IsScared;
                     enemyGO.GetComponent<EnemyMovement>().Stop = enemy.Stop;
                 }
+
+                if (this.ProgressInGame.IsDarkMatterModuleFound == false)
+                {
+                    this.ManageEnemies.SpawnBaseCommanders();
+                }
+                // else: base commanders are already restored from the saved data
             }
             else
             {
@@ -572,7 +593,7 @@ public class GameManagerScript : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                this.PlayerHaveDarkMatterModule();
+                this.PlayerHaveDarkMatterModule(false);
 
                 break;
             }

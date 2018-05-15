@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour
     public Image DamageImage;
     [HideInInspector]
     public bool HaveOxygen = false;
-
+    
     private Color flashColor = new Color(1f, 0f, 0f, 0.6f);
     private float flashSpeed = 3f;
 
@@ -134,6 +134,15 @@ public class PlayerHealth : MonoBehaviour
     {
         this.CurrentHealth = this.StartingHealth;
         this.HealthSlider.value = this.CurrentHealth;
+
+        StartCoroutine(this.AnimateHealPlayer());
+    }
+
+    private IEnumerator AnimateHealPlayer()
+    {        
+        this.HealthSlider.transform.localScale *= 1.5f;
+        yield return new WaitForSeconds(0.7f);
+        this.HealthSlider.transform.localScale /= 1.5f;
     }
 
     /// <summary>

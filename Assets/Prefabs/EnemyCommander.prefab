@@ -1681,21 +1681,15 @@ AudioSource:
     - serializedVersion: 2
       time: 0.4812551
       value: 1
-      inSlope: -7.002809
-      outSlope: -7.002809
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 0.75190955
-      value: 0.44255066
-      inSlope: -1.7267301
-      outSlope: -1.7267301
+      inSlope: -0.31236565
+      outSlope: -0.31236565
       tangentMode: 0
     - serializedVersion: 2
       time: 1
       value: 0
-      inSlope: -0.14291406
-      outSlope: -0.14291406
-      tangentMode: 0
+      inSlope: -1.9277298
+      outSlope: -4.0303526
+      tangentMode: 5
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0

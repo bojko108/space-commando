@@ -98,7 +98,11 @@ public class EnemyHealth : MonoBehaviour
         this.enemyAudio.playOnAwake = false;
         this.enemyAudio.loop = false;
         this.enemyAudio.Play();
-        
+
+        // destroy minimap icon
+        Destroy(this.gameObject.FindChildrenByName(Resources.Various.MinimapIcon)[0]);
+
+        // destroy enemy
         Destroy(this.gameObject, 10f);
     }
 }

@@ -16,7 +16,7 @@ namespace Assets.Scripts.SaveLoad
         /// set this to TRUE when the player dies
         /// </summary>
         public static bool IsPlayerDead = false;
-
+        
         private static string fileName = String.Format("{0}/{1}", Application.persistentDataPath, Resources.Various.SaveFileName);
 
         /// <summary>
@@ -155,6 +155,7 @@ namespace Assets.Scripts.SaveLoad
         private static List<GameObject> GetEnemies()
         {
             List<GameObject> enemies = new List<GameObject>();
+            enemies.AddRange(GameObject.FindGameObjectsWithTag(Resources.Tags.BaseCommander));
             enemies.AddRange(GameObject.FindGameObjectsWithTag(Resources.Tags.Commander));
             enemies.AddRange(GameObject.FindGameObjectsWithTag(Resources.Tags.Soldier));
             enemies.AddRange(GameObject.FindGameObjectsWithTag(Resources.Tags.Worker));
