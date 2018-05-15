@@ -49,44 +49,79 @@ public class EnemiesManager
         this.workersSpawnPoints.AddRange(workersSpawnPoints);
     }
 
-    public void SpawnBaseCommanders()
+    public IEnumerator RestoreEnemies(List<Character> enemies)
+    {
+        foreach (Enemy enemy in enemies)
+        {
+            //GameObject enemyGO = this.ManageEnemies.CreateEnemy(enemy.Tag, enemy.SpawnPointName);
+            //enemyGO.transform.position = enemy.Position.ToVector3();
+            //enemyGO.transform.rotation = Quaternion.Euler(enemy.Rotation.ToVector3());
+            //enemyGO.transform.localPosition = enemy.Position.ToVector3();
+            //enemyGO.transform.localRotation = Quaternion.Euler(enemy.Rotation.ToVector3());
+
+            GameObject enemyGO = this.RestoreEnemy(enemy);
+
+            enemyGO.GetComponent<EnemyHealth>().SetHealth(enemy.HealthLevel);
+            enemyGO.GetComponent<EnemyMovement>().IsChasing = enemy.IsChasing;
+            enemyGO.GetComponent<EnemyMovement>().IsScared = enemy.IsScared;
+            enemyGO.GetComponent<EnemyMovement>().Stop = enemy.Stop;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        //if (this.ProgressInGame.IsDarkMatterModuleFound == false)
+        //{
+        //    this.ManageEnemies.SpawnBaseCommanders();
+        //}
+        //// else: base commanders are already restored from the saved data
+    }
+
+    public IEnumerator SpawnBaseCommanders()
     {
         for (int i = 0; i < this.NumberOfBaseCommanders; i++)
         {
             this.SpawnBaseCommander();
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
     /// <summary>
     /// spawn all base commanders
     /// </summary>
-    public void SpawnCommanders()
+    public IEnumerator SpawnCommanders()
     {
         for (int i = 0; i < this.NumberOfCommanders; i++)
         {
             this.SpawnCommander();
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
     /// <summary>
     /// spawn all soldiers
     /// </summary>
-    public void SpawnSoldiers()
+    public IEnumerator SpawnSoldiers()
     {
         for (int i = 0; i < this.NumberOfSoldiers; i++)
         {
             this.SpawnSoldier();
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
     /// <summary>
     /// spawn all workers
     /// </summary>
-    public void SpawnWorkers()
+    public IEnumerator SpawnWorkers()
     {
         for (int i = 0; i < this.NumberOfWorkers; i++)
         {
             this.SpawnWorker();
+
+            yield return new WaitForEndOfFrame();
         }
     }
 

@@ -56,14 +56,18 @@ public class EnemyMovement : MonoBehaviour
 
         this.timer += Time.deltaTime;
 
-        // detect if the player is near the enemy
-        if (this.DistanceToPlayer() < this.DetectDistance)
+        // execute every 20th frame
+        if (Time.frameCount % 20 == 0)
         {
-            // workers will go away from the player
-            this.IsScared = this.tag.Equals(Resources.Tags.Worker);
+            // detect if the player is near the enemy
+            if (this.DistanceToPlayer() < this.DetectDistance)
+            {
+                // workers will go away from the player
+                this.IsScared = this.tag.Equals(Resources.Tags.Worker);
 
-            // commanders and soldiers will attack the player
-            this.IsChasing = this.tag.Equals(Resources.Tags.Worker) == false;
+                // commanders and soldiers will attack the player
+                this.IsChasing = this.tag.Equals(Resources.Tags.Worker) == false;
+            }
         }
     }
 

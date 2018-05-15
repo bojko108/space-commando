@@ -351,7 +351,7 @@ public class GameManagerScript : MonoBehaviour
         if (savedGame == false)
         {
             // spawn base commanders
-            this.ManageEnemies.SpawnBaseCommanders();
+            StartCoroutine(this.ManageEnemies.SpawnBaseCommanders());
         }
         // else: will be restored from the saved data
 
@@ -436,6 +436,9 @@ public class GameManagerScript : MonoBehaviour
 
             if (savedGame)
             {
+                // too slow for loading saved data!
+                //StartCoroutine(this.ManageEnemies.RestoreEnemies(this.ProgressInGame.Enemies));
+
                 foreach (Enemy enemy in this.ProgressInGame.Enemies)
                 {
                     //GameObject enemyGO = this.ManageEnemies.CreateEnemy(enemy.Tag, enemy.SpawnPointName);
@@ -460,9 +463,9 @@ public class GameManagerScript : MonoBehaviour
             }
             else
             {
-                this.ManageEnemies.SpawnWorkers();
-                this.ManageEnemies.SpawnSoldiers();
-                this.ManageEnemies.SpawnCommanders();
+                StartCoroutine(this.ManageEnemies.SpawnWorkers());
+                StartCoroutine(this.ManageEnemies.SpawnSoldiers());
+                StartCoroutine(this.ManageEnemies.SpawnCommanders());
             }
 
             #endregion
