@@ -921,7 +921,7 @@ MonoBehaviour:
   DamagePerShot: 20
   FireRate: 0.2
   Range: 200
-  lazerPrefab: {fileID: 1684606925262778, guid: c7b004c5d0f86454eb8739d16f5a4d86,
+  lazerPrefab: {fileID: 1288394546924368, guid: c7b004c5d0f86454eb8739d16f5a4d86,
     type: 2}
 --- !u!124 &124217333737057606
 Behaviour:
@@ -1014,7 +1014,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -1575386708
+  randomSeed: 1576679133
   InitialModule:
     serializedVersion: 3
     enabled: 1
