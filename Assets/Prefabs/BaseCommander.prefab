@@ -1718,7 +1718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55521bfe115aead438aa01815e8ee3be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeBetweenAttacks: 5
+  TimeBetweenAttacks: 3
   AttackDamage: 40
 --- !u!135 &135567492220938136
 SphereCollider:
