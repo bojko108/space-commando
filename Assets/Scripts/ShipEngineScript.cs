@@ -13,7 +13,7 @@ public class ShipEngineScript : MonoBehaviour
     private float repairingRadius;
     private GameObject engine;
 
-    private void Start()
+    private void Awake()
     {
         this.source = this.GetComponent<AudioSource>();
 

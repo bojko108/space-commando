@@ -309,6 +309,20 @@ public class GameManagerScript : MonoBehaviour
                 this.DisplayInfoText(Resources.Messages.FindDarkMatterModule);
             }
         }
+        else
+        {
+            if (this.ProgressInGame.IsDarkMatterModuleFound)
+            {
+                this.DisplayInfoText(Resources.Messages.BoardShip);
+
+                // wait for player to board the ship
+                StartCoroutine(this.WaitForUserToGetOnBoard());
+            }
+            else
+            {
+                this.DisplayInfoText(Resources.Messages.FindDarkMatterModule);
+            }
+        }
     }
 
     /// <summary>
@@ -427,7 +441,7 @@ public class GameManagerScript : MonoBehaviour
             if (this.ProgressInGame.IsSpaceshipRepaired)
             {
                 this.shipEngine.Repaired();
-                EventManager.Emit(Resources.Events.GameFinish);
+                //EventManager.Emit(Resources.Events.GameFinish);
             }
 
             #endregion
@@ -518,6 +532,8 @@ public class GameManagerScript : MonoBehaviour
             enemy.GetComponent<EnemyMovement>().DetectDistance *= factor;
         }
     }
+
+
 
     /// <summary>
     /// sets enemies in chasing mode
@@ -651,6 +667,8 @@ public class GameManagerScript : MonoBehaviour
             }
             else
             {
+                this.ProgressInGame.IsSpaceshipRepaired = true;
+
                 this.repairSlider.gameObject.SetActive(false);
 
                 this.DisplayInfoText(Resources.Messages.BoardShip);
@@ -663,10 +681,13 @@ public class GameManagerScript : MonoBehaviour
             }
         }
 
-        this.shipEngine.NotRepaired();
+        if (this.ProgressInGame.IsSpaceshipRepaired == false)
+        {
+            this.shipEngine.NotRepaired();
 
-        this.repairSlider.value = 0;
-        this.repairSlider.gameObject.SetActive(false);
+            this.repairSlider.value = 0;
+            this.repairSlider.gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator WaitForUserToGetOnBoard()
