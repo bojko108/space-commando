@@ -658,6 +658,11 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 626420463}
+    - target: {fileID: 82037011713783014, guid: 4e6bf53b888edb544b8a990aba584c27,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
   m_IsPrefabParent: 0
@@ -1094,7 +1099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PooledPrefab: {fileID: 1288394546924368, guid: c7b004c5d0f86454eb8739d16f5a4d86,
     type: 2}
-  PooledAmount: 10
+  PooledAmount: 100
   WillGrow: 1
 --- !u!4 &594322709
 Transform:
@@ -1957,6 +1962,11 @@ Prefab:
     - target: {fileID: 4056149725713230, guid: 136c2eaea028da74c843583ba17f42a3, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114945580090172900, guid: 136c2eaea028da74c843583ba17f42a3,
+        type: 2}
+      propertyPath: PooledAmount
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 136c2eaea028da74c843583ba17f42a3, type: 2}

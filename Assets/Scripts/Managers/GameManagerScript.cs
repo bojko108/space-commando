@@ -33,7 +33,7 @@ public class GameManagerScript : MonoBehaviour
     private bool gameIsPaused = false;
     // tasks will be displayed while this is set to true
     private bool displayTasks = false;
-    private bool baseCommandersSpawned = false;
+
     private Slider repairSlider;
 
     // game event listeners
@@ -314,7 +314,6 @@ public class GameManagerScript : MonoBehaviour
             if (this.ProgressInGame.IsDarkMatterModuleFound)
             {
                 this.DisplayInfoText(Resources.Messages.BoardShip);
-
                 // wait for player to board the ship
                 StartCoroutine(this.WaitForUserToGetOnBoard());
             }
@@ -697,9 +696,18 @@ public class GameManagerScript : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                EventManager.Emit(Resources.Events.GameFinish);
+                // base commanders are blocking the runway, so kill them!
+                int baseCommandersCount = GameObject.FindGameObjectsWithTag(Resources.Tags.BaseCommander).Length;
 
-                break;
+                if (baseCommandersCount < 1)
+                {
+                    EventManager.Emit(Resources.Events.GameFinish);
+                    break;
+                }
+                else
+                {
+                    this.DisplayInfoText(Resources.Messages.KillBaseCommanders);
+                }
             }
 
             yield return null;

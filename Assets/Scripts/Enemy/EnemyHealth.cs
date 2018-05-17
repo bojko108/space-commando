@@ -100,7 +100,11 @@ public class EnemyHealth : MonoBehaviour
         this.enemyAudio.Play();
 
         // destroy minimap icon
-        Destroy(this.gameObject.FindChildrenByName(Resources.Various.MinimapIcon)[0]);
+        List<GameObject> minimapIcon = this.gameObject.FindChildrenByName(Resources.Various.MinimapIcon);
+        if (minimapIcon.Count > 0)
+        {
+            Destroy(minimapIcon[0]);
+        }
 
         // destroy enemy
         Destroy(this.gameObject, 10f);

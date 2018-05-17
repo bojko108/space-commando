@@ -56,7 +56,7 @@ public class ObjectPooler : MonoBehaviour
 
     private GameObject CreateNewPooledObject()
     {
-        GameObject obj = Instantiate(this.PooledPrefab) as GameObject;
+        GameObject obj = Instantiate(this.PooledPrefab, this.transform) as GameObject;
         obj.SetActive(false);
         return obj;
     }

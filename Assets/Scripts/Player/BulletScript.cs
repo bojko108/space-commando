@@ -8,7 +8,7 @@ public class BulletScript : MonoBehaviour
     private PlayerShooting playerShooting;
     private Rigidbody bulletBody;
 
-    private void Start()
+    private void Awake()
     {
         this.bulletBody = this.GetComponent<Rigidbody>();
         this.enemiesLayer = LayerMask.NameToLayer(Resources.Layers.Enemies);
@@ -24,13 +24,13 @@ public class BulletScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        this.gameObject.SetActive(false);
-
         GameObject hit = collision.gameObject;
 
-        if (hit.layer == this.enemiesLayer)
+        if (hit != null && hit.layer == this.enemiesLayer)
         {
             this.playerShooting.HitEnemy(hit, collision.contacts[0].point);
         }
+
+        this.gameObject.SetActive(false);
     }
 }
