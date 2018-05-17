@@ -10650,6 +10650,10 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1518158882}
+    - target: {fileID: 1555712819584056, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
   m_IsPrefabParent: 0
@@ -15039,7 +15043,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1341406272}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 659, y: 0, z: -126}
+  m_LocalPosition: {x: 305, y: 0, z: 77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2024141283}

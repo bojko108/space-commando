@@ -170,6 +170,6 @@ public class PlayerHealth : MonoBehaviour
 
         EventManager.Emit(Resources.Events.PlayerDead);
 
-        Destroy(this.gameObject, 2);
+        Destroy(this.gameObject, 2f);
     }
 }

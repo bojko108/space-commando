@@ -83,6 +83,7 @@ public class PlayerShooting : MonoBehaviour
     // does not colllide with any objects, just for displaying bullets
     private void FireLaserBullet()
     {
+        // use pooling
         GameObject bullet = Instantiate(this.lazerPrefab, this.transform.position + this.transform.forward * 10, this.transform.rotation);
 
         bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 150;

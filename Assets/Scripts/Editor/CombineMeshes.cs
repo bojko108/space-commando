@@ -40,8 +40,8 @@ public class CombineMeshes : ScriptableWizard
             }
 
             GameObject combinedMesh = new GameObject();
+            combinedMesh.AddComponent<MeshRenderer>();
             MeshFilter meshFilter = combinedMesh.AddComponent<MeshFilter>();
-
             meshFilter.sharedMesh = new Mesh();
             meshFilter.sharedMesh.CombineMeshes(combine);
             //transform.gameObject.active = true;
