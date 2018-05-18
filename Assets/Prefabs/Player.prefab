@@ -920,9 +920,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DamagePerShot: 20
   FireRate: 0.2
-  Range: 200
-  lazerPrefab: {fileID: 1288394546924368, guid: c7b004c5d0f86454eb8739d16f5a4d86,
-    type: 2}
 --- !u!124 &124217333737057606
 Behaviour:
   m_ObjectHideFlags: 1
@@ -947,7 +944,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2.8
+  m_Height: 1.8
   m_Radius: 1.13
   m_SlopeLimit: 45
   m_StepOffset: 0.3
