@@ -107,7 +107,7 @@ public class PlayerShooting : MonoBehaviour
             bullet.transform.rotation = this.gunTransform.rotation;
             bullet.SetActive(true);
 
-            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 150;
+            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 150f;
 
             yield return new WaitForSeconds(3f);
 

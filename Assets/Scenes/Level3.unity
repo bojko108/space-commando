@@ -1104,7 +1104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PooledPrefab: {fileID: 1288394546924368, guid: c7b004c5d0f86454eb8739d16f5a4d86,
     type: 2}
-  PooledAmount: 100
+  PooledAmount: 20
   WillGrow: 1
 --- !u!4 &594322709
 Transform:
@@ -1971,7 +1971,7 @@ Prefab:
     - target: {fileID: 114945580090172900, guid: 136c2eaea028da74c843583ba17f42a3,
         type: 2}
       propertyPath: PooledAmount
-      value: 100
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 136c2eaea028da74c843583ba17f42a3, type: 2}
