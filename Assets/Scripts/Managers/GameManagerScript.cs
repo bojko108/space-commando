@@ -356,10 +356,10 @@ public class GameManagerScript : MonoBehaviour
         this.FinishTask(Resources.Tasks.FindDarkMatterModule);
 
         // increase detect distance for commanders
-        this.IncreaseDetectDistance(Resources.Tags.Commander, 2f);
+        this.IncreaseDetectDistance(Resources.Tags.Commander, 3f);
 
         // increase detect distance for soldiers
-        this.IncreaseDetectDistance(Resources.Tags.Soldier, 2f);
+        this.IncreaseDetectDistance(Resources.Tags.Soldier, 4f);
 
         if (savedGame == false)
         {

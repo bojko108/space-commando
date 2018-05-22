@@ -2037,7 +2037,7 @@ MonoBehaviour:
   ManageEnemies:
     NumberOfBaseCommanders: 2
     NumberOfCommanders: 20
-    NumberOfSoldiers: 30
+    NumberOfSoldiers: 40
     NumberOfWorkers: 8
     BaseCommanderPrefab: {fileID: 1395132087209292, guid: 3c3ba9d9749d3404cb86934ef4249863,
       type: 2}
