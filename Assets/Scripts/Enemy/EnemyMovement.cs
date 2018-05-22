@@ -45,7 +45,8 @@ public class EnemyMovement : MonoBehaviour
         this.agent = GetComponent<NavMeshAgent>();
         this.agent.speed = this.WalkSpeed;
 
-        this.savePoint = GameObject.FindGameObjectsWithTag(Resources.Tags.CommanderSpawnPoint)[0].transform;
+        GameObject[] savePoints = GameObject.FindGameObjectsWithTag(Resources.Tags.CommanderSpawnPoint);
+        this.savePoint = savePoints[UnityEngine.Random.Range(0, savePoints.Length)].transform;
 
         StartCoroutine(this.SetDestination());
     }
