@@ -1,6 +1,5 @@
 fileFormatVersion: 2
 guid: 7d0e85e4ded5c4a40ab9f5e3bfbc43a3
-timeCreated: 18446744011573954816
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -162,7 +161,18 @@ ModelImporter:
     13700002: Ciccio_LOD1
     13700004: Ciccio_LOD2
     20500000: //RootNode
-  externalObjects: {}
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ciccio_Armor_LOD
+    second: {fileID: 2100000, guid: f7f6790e5b6d8cf42b5de5e75391a9ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Space_Marines_Glass
+    second: {fileID: 2100000, guid: b7ea44a54a548cb459f36550c92cc22c, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -177,10 +187,25 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'Ciccio_SH_Spine01J' has translation animation
+      that will be discarded.\n\t'Ciccio_SH_Spine02J' has translation animation that
+      will be discarded.\n\t'Ciccio_SH_Spine03J' has translation animation that will
+      be discarded.\n\t'Ciccio_SH_Spine03J' is inbetween humanoid transforms and has
+      rotation animation that will be discarded.\n\t'Ciccio_SH_SpineTopJ' has translation
+      animation that will be discarded.\n\t'Ciccio_SH_SpineTopJ' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n\t'Ciccio_SH_HeadJ'
+      has translation animation that will be discarded.\n\t'Ciccio_SH_lClavicleJ'
+      has translation animation that will be discarded.\n\t'Ciccio_SH_lShoulderJ'
+      has translation animation that will be discarded.\n\t'Ciccio_SH_rClavicleJ'
+      has translation animation that will be discarded.\n\t'Ciccio_SH_lBallJ' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'Ciccio_SH_rBallJ'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
