@@ -25,6 +25,8 @@ TagManager:
   - RepairSlider
   - BaseCommander
   - BaseCommanderSpawnPoint
+  - Commands
+  - Drone
   layers:
   - Default
   - TransparentFX

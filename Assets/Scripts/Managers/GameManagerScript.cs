@@ -390,6 +390,7 @@ public class GameManagerScript : MonoBehaviour
             // add main control room and spaceship to the radar
             this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.MainComputer));
             this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Ship));
+            this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Drone));
             this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Minimap);
 
             #region SET PLAYER PROPERTIES

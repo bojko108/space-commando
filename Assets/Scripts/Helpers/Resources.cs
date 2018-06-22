@@ -21,7 +21,7 @@ public static class Resources
         public const string Intro = "Intro";
         public const string Level1 = "Level1";
         public const string Level2 = "Level2";
-        public const string Level3 = "Level3";        
+        public const string Level3 = "Level3";
         public const string Outro = "Outro";
     }
 
@@ -52,6 +52,10 @@ public static class Resources
         public const string SaveGame = "SaveGame";
         public const string GoToMenu = "GoToMenu";
         public const string QuitGame = "QuitGame";
+
+        public const string Patrol = "Patrol";
+        public const string Scan = "Scan";
+        public const string Attack = "Attack";
     }
 
     public static class Tasks
@@ -74,6 +78,7 @@ public static class Resources
     {
         public const string MapProperties = "MapProperties";
         public const string Player = "Player";
+        public const string Drone = "Drone";
         public const string MainCamera = "MainCamera";
         public const string MainComputer = "MainComputer";
         public const string StorageRoom = "StorageRoom";
@@ -86,6 +91,7 @@ public static class Resources
         public const string Soldier = "Soldier";
         public const string Worker = "Worker";
         public const string Tasks = "Tasks";
+        public const string Commands = "Commands";
         public const string BaseCommanderSpawnPoint = "BaseCommanderSpawnPoint";
         public const string CommanderSpawnPoint = "CommanderSpawnPoint";
         public const string SoldierSpawnPoint = "SoldierSpawnPoint";

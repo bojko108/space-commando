@@ -98,7 +98,7 @@ public class PlayerShooting : MonoBehaviour
 
     private IEnumerator FireLaserBullet()
     {
-        GameObject bullet = ObjectPooler.Current.GetPooledObject();
+        GameObject bullet = ObjectPooler.Current.GetPooledObject(enumBulletType.Laser);
 
         if (bullet != null)
         {

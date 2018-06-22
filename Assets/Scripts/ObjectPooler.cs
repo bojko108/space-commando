@@ -6,17 +6,27 @@ using System.Text;
 
 using UnityEngine;
 
+public enum enumBulletType
+{
+    Laser,
+    Plasma
+}
+
 public class ObjectPooler : MonoBehaviour
 {
+    [HideInInspector]
     public static ObjectPooler Current;
-    [Tooltip("Object prefab to add to the pool")]
-    public GameObject PooledPrefab;
+    [Tooltip("Laser prefab to add to the pool")]
+    public GameObject LaserPrefab;
+    [Tooltip("Plasma prefab to add to the pool")]
+    public GameObject PlasmaPrefab;
     [Tooltip("Number of objects to add to the pool when the game starts")]
     public int PooledAmount = 10;
     [Tooltip("Will the pool grow automatically when there are no objects left in it")]
     public bool WillGrow = true;
-
-    private List<GameObject> pooledObjects;
+    
+    private List<GameObject> laserObjects;
+    private List<GameObject> plasmaObjects;
 
     private void Awake()
     {
@@ -25,39 +35,75 @@ public class ObjectPooler : MonoBehaviour
 
     private void Start()
     {
-        pooledObjects = new List<GameObject>();
-
+        laserObjects = new List<GameObject>();
         for (int i = 0; i < this.PooledAmount; i++)
         {
-            this.pooledObjects.Add(this.CreateNewPooledObject());
+            this.laserObjects.Add(this.CreateNewPooledObject(enumBulletType.Laser));
+        }
+
+        plasmaObjects = new List<GameObject>();
+        for (int i = 0; i < this.PooledAmount; i++)
+        {
+            this.plasmaObjects.Add(this.CreateNewPooledObject(enumBulletType.Plasma));
         }
     }
 
-    public GameObject GetPooledObject()
+    public GameObject GetPooledObject(enumBulletType type)
     {
-        for (int i = 0; i < this.pooledObjects.Count; i++)
+        switch (type)
         {
-            if (this.pooledObjects[i].activeInHierarchy == false)
-            {
-                return this.pooledObjects[i];
-            }
+            case enumBulletType.Laser:
+                for (int i = 0; i < this.laserObjects.Count; i++)
+                {
+                    if (this.laserObjects[i].activeInHierarchy == false)
+                    {
+                        return this.laserObjects[i];
+                    }
+                }
+                break;
+            case enumBulletType.Plasma:
+                for (int i = 0; i < this.plasmaObjects.Count; i++)
+                {
+                    if (this.plasmaObjects[i].activeInHierarchy == false)
+                    {
+                        return this.plasmaObjects[i];
+                    }
+                }
+                break;
         }
 
         if (this.WillGrow)
         {
-            GameObject obj = this.CreateNewPooledObject();
-            this.pooledObjects.Add(obj);
+            GameObject obj = this.CreateNewPooledObject(type);
 
-            return obj;
+            switch (type)
+            {
+                case enumBulletType.Laser:
+                    this.laserObjects.Add(obj);
+                    return obj;
+                case enumBulletType.Plasma:
+                    this.plasmaObjects.Add(obj);
+                    return obj;
+            }
         }
 
         return null;
     }
 
-    private GameObject CreateNewPooledObject()
+    private GameObject CreateNewPooledObject(enumBulletType type)
     {
-        GameObject obj = Instantiate(this.PooledPrefab, this.transform) as GameObject;
-        obj.SetActive(false);
-        return obj;
+        switch (type)
+        {
+            case enumBulletType.Laser:
+                GameObject laser = Instantiate(this.LaserPrefab, this.transform) as GameObject;
+                laser.SetActive(false);
+                return laser;
+            case enumBulletType.Plasma:
+                GameObject plasma = Instantiate(this.PlasmaPrefab, this.transform) as GameObject;
+                plasma.SetActive(false);
+                return plasma;
+        }
+
+        return null;
     }
 }

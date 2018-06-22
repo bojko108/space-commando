@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33729752206054466}
   - component: {fileID: 23088790359405334}
   - component: {fileID: 65385516527532174}
-  - component: {fileID: 54360637525532790}
+  - component: {fileID: 54355364147920104}
   - component: {fileID: 114533921028793074}
   m_Layer: 11
   m_Name: LaserBullet
@@ -57,6 +57,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: d55cfa31db500e14992a6b65999aebfd, type: 2}
   m_StaticBatchInfo:
@@ -85,7 +86,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1288394546924368}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54360637525532790
+--- !u!54 &54355364147920104
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -99,7 +100,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!65 &65385516527532174
 BoxCollider:
   m_ObjectHideFlags: 1
