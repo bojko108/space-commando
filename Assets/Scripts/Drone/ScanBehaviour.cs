@@ -8,9 +8,11 @@ public class ScanBehaviour : BaseBehaviour
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        this.NavAgent.baseOffset = this.DroneLogic.ScanHeight;
-        
+        this.DroneLogic.SignalLight.DronMode = enumDronMode.Scan;
+
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandScan).GetComponent<UnityEngine.UI.Text>().color = Color.white;
+
+        this.NavAgent.baseOffset = this.DroneLogic.ScanHeight;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -9,13 +9,15 @@ public class AttackBehaviour : BaseBehaviour
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
+        this.DroneLogic.SignalLight.DronMode = enumDronMode.Attack;
+
+        GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.white;
+
         this.NavAgent.speed = this.DroneLogic.AttackSpeed;
         this.NavAgent.angularSpeed = this.DroneLogic.AttackAngularSpeed;
         this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
 
         this.NavAgent.baseOffset = this.DroneLogic.Height * 2;
-
-        GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.white;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -45,10 +47,12 @@ public class AttackBehaviour : BaseBehaviour
 
         Vector3 direction = target - this.DroneTransform.position;
 
-        // this.DroneTransform.position will be replaced internally with BarrelEnd.position
-        this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
-
-        // fire on enemy until he is dead
+        if (Vector3.Angle(direction, this.DroneTransform.forward) < 90f)
+        {
+            //CHECK VISIBILITY!
+            // this.DroneTransform.position will be replaced internally with BarrelEnd.position
+            this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
+        }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

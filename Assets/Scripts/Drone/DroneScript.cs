@@ -26,6 +26,8 @@ public class DroneScript : MonoBehaviour
     public float AttackAngularSpeed = 200f;
     [Tooltip("Set attack acceleration, used also when catching up with the player")]
     public float AttackAcceleration = 15f;
+    [Tooltip("Max angle at which the drone can shoot at enemies")]
+    public float MaxAttackAngle = 90f;
 
     [Tooltip("Set sound on enemy detected. If more than 5 enemies are detected this will be repeated")]
     public AudioClip AlarmSound;
@@ -42,15 +44,20 @@ public class DroneScript : MonoBehaviour
     public GameObject CurrentTarget;
     private List<GameObject> targets;
 
+    [HideInInspector]
+    public DroneSignalLight SignalLight;
+
     private AudioSource droneEngineAudioSource;
     private AudioSource droneAlarmAudioSource;
 
     private void Awake()
     {
-        this.animator = GetComponent<Animator>();
         this.targets = new List<GameObject>();
 
         this.PlayerTransform = GameObject.FindGameObjectWithTag(Resources.Tags.Player).transform;
+
+        this.animator = GetComponent<Animator>();
+        this.SignalLight = GetComponentInChildren<DroneSignalLight>();
 
         // set all audio listeners
         AudioSource[] audioSources = GetComponents<AudioSource>();
@@ -90,17 +97,11 @@ public class DroneScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // check visibility!
-
         if (other.gameObject.CompareTag(Resources.Tags.BaseCommander)
             || other.gameObject.CompareTag(Resources.Tags.Commander)
             || other.gameObject.CompareTag(Resources.Tags.Soldier))
         {
-
             this.AddTarget(other.gameObject);
-
-            // wait for attack command!
-            //this.SetInAttackMode();
         }
     }
 
