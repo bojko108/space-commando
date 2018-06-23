@@ -19,6 +19,8 @@ public class PatrolBehaviour : BaseBehaviour
             if (this.IsCloseToPlayer())
             {
                 this.NavAgent.speed = this.DroneLogic.PatrolSpeed;
+                this.NavAgent.angularSpeed = this.DroneLogic.PatrolAngularSpeed;
+                this.NavAgent.acceleration = this.DroneLogic.PatrolAcceleration;
                 if (this.DestinationReached())
                 {
                     Vector3 destination = this.GetRandomDestination(this.PlayerTransform.position, this.DroneLogic.MaxDistance, NavMesh.AllAreas);
@@ -27,7 +29,9 @@ public class PatrolBehaviour : BaseBehaviour
             }
             else
             {
-                this.NavAgent.speed = this.DroneLogic.MaxSpeed;
+                this.NavAgent.speed = this.DroneLogic.AttackSpeed;
+                this.NavAgent.angularSpeed = this.DroneLogic.AttackAngularSpeed;
+                this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
                 this.NavAgent.SetDestination(this.PlayerTransform.position + this.PlayerTransform.forward * 5f);
             }
         }

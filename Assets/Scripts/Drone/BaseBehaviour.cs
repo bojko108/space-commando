@@ -15,6 +15,8 @@ public class BaseBehaviour : StateMachineBehaviour
     [HideInInspector]
     public DroneScript DroneLogic;
     [HideInInspector]
+    public DroneShooting ShootingLogic;
+    [HideInInspector]
     public Transform DroneTransform;
 
     [HideInInspector]
@@ -32,6 +34,7 @@ public class BaseBehaviour : StateMachineBehaviour
         this.Drone = animator.gameObject;
         this.DroneTransform = this.Drone.transform;
         this.DroneLogic = this.Drone.GetComponent<DroneScript>();
+        this.ShootingLogic = this.Drone.GetComponentInChildren<DroneShooting>();
 
         this.NavAgent = this.Drone.GetComponent<NavMeshAgent>();
     }

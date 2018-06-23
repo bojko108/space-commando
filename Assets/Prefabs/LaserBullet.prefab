@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23088790359405334}
   - component: {fileID: 65385516527532174}
   - component: {fileID: 54355364147920104}
-  - component: {fileID: 114533921028793074}
+  - component: {fileID: 114167251677878892}
   m_Layer: 11
   m_Name: LaserBullet
   m_TagString: Untagged
@@ -113,7 +113,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 0.5}
   m_Center: {x: 0, y: 0, z: -0.3}
---- !u!114 &114533921028793074
+--- !u!114 &114167251677878892
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -121,6 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1288394546924368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43a685af7160d264c978e2701b884267, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b3b063478eaf714989629626dd31d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShootingScript: {fileID: 0}

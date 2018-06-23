@@ -20,8 +20,7 @@ public class EnemyHealth : MonoBehaviour
     private ParticleSystem hitParticles;
     // collider for shooting at the enemy
     private CapsuleCollider capsuleCollider;
-    // trigger collider for detecting the player
-    private SphereCollider sphereCollider;
+    
     // movement script
     private EnemyMovement enemyMovement;
 
@@ -31,7 +30,6 @@ public class EnemyHealth : MonoBehaviour
         this.animator = GetComponent<Animator>();
         this.hitParticles = GetComponentInChildren<ParticleSystem>();
         this.capsuleCollider = GetComponent<CapsuleCollider>();
-        this.sphereCollider = GetComponent<SphereCollider>();
         this.enemyMovement = GetComponent<EnemyMovement>();
         this.CurrentHealth = this.StartingHealth;
     }

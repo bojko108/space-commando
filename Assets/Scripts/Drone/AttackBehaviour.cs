@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AttackBehaviour : BaseBehaviour
 {
@@ -8,23 +9,42 @@ public class AttackBehaviour : BaseBehaviour
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        this.NavAgent.speed = this.DroneLogic.MaxSpeed;
+        this.NavAgent.speed = this.DroneLogic.AttackSpeed;
+        this.NavAgent.angularSpeed = this.DroneLogic.AttackAngularSpeed;
+        this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
+
         this.NavAgent.baseOffset = this.DroneLogic.Height * 2;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (this.DroneLogic.CurrentTarget == null) return;
+        this.DroneLogic.SwitchTarget();
+
+        if (this.DroneLogic.CurrentTarget == null)
+        {
+            // no other targets so go to patrol mode....
+            this.DroneLogic.SetInPatrolMode();
+            return;
+        }
 
         if (Time.frameCount % 20 == 0)
         {
-            this.NavAgent.SetDestination(this.DroneLogic.CurrentTarget.transform.position);
+            if (this.DestinationReached())
+            {
+                base.GetRandomDestination(this.DroneLogic.CurrentTarget.transform.position, 20f, NavMesh.AllAreas);
+                this.NavAgent.SetDestination(this.DroneLogic.CurrentTarget.transform.position);
+            }
         }
 
-        Debug.DrawLine(this.DroneTransform.position, this.DroneLogic.CurrentTarget.transform.position);
+        Vector3 target = this.DroneLogic.CurrentTarget.transform.position;
+        target.y += 2f;
 
-        Vector3 direction = this.DroneLogic.CurrentTarget.transform.position - this.DroneTransform.position;
-        this.DroneLogic.Shoot(Quaternion.LookRotation(direction));
+        Debug.DrawLine(this.DroneTransform.position, target);
+
+        Vector3 direction = target - this.DroneTransform.position;
+
+        // this.DroneTransform.position will be replaced internally with BarrelEnd.position
+        this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
 
         // fire on enemy until he is dead
     }

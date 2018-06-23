@@ -85,7 +85,7 @@ public static class Resources
         public const string Building = "Building";
         public const string MinimapIcon = "MinimapIcon";
         public const string Ship = "Ship";
-        public const string BarrelEnd = "BarrelEnd";
+        //public const string BarrelEnd = "BarrelEnd";
         public const string BaseCommander = "BaseCommander";
         public const string Commander = "Commander";
         public const string Soldier = "Soldier";

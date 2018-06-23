@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,18 +11,21 @@ public class DroneScript : MonoBehaviour
     [Tooltip("Set scan height for NavMeshAgent.BaseOffset. This values is used when in Scan mode.")]
     public int ScanHeight = 50;
     [Tooltip("Set max distance to the player when in patrol mode")]
-    public float MaxDistance = 20f;
+    public float MaxDistance = 30f;
+
     [Tooltip("Set speed when in patrol mode")]
     public float PatrolSpeed = 5f;
-    [Tooltip("Set speed, when catching up")]
-    public float MaxSpeed = 15f;
+    [Tooltip("Set speed when in patrol mode")]
+    public float PatrolAngularSpeed = 140f;
+    [Tooltip("Set speed when in patrol mode")]
+    public float PatrolAcceleration = 10f;
 
-    [Tooltip("Gun damage")]
-    public int DamagePerShot = 50;
-    [Tooltip("Gun fire rate")]
-    public float FireRate = 0.3f;
-
-    private float timer;
+    [Tooltip("Set attack speed, used also when catching up with the player")]
+    public float AttackSpeed = 15f;
+    [Tooltip("Set attack angular speed, used also when catching up with the player")]
+    public float AttackAngularSpeed = 200f;
+    [Tooltip("Set attack acceleration, used also when catching up with the player")]
+    public float AttackAcceleration = 15f;
 
     private Animator animator;
 
@@ -29,126 +33,155 @@ public class DroneScript : MonoBehaviour
     public GameObject CurrentTarget;
     private List<GameObject> targets;
 
-    private UnityAction onPatrol;
-    private UnityAction onScan;
-    private UnityAction onAttack;
+    private int enemiesLayer;
 
     private void Awake()
     {
         this.animator = GetComponent<Animator>();
         this.targets = new List<GameObject>();
+
+        this.enemiesLayer = LayerMask.NameToLayer(Resources.Layers.Enemies);
     }
 
-    private void Start()
+    private void Update()
     {
-        this.onPatrol = new UnityAction(this.OnPatrol);
-        EventManager.On(Resources.Events.Patrol, this.onPatrol);
-
-        this.onScan = new UnityAction(this.OnScan);
-        EventManager.On(Resources.Events.Scan, this.onScan);
-
-        this.onAttack = new UnityAction(this.OnAttack);
-        EventManager.On(Resources.Events.Attack, this.onAttack);
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            this.SetInPatrolMode();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            this.SetInScanMode();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            this.SetInAttackMode();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag.Equals(Resources.Tags.BaseCommander)
-            || other.gameObject.tag.Equals(Resources.Tags.Commander)
-            || other.gameObject.tag.Equals(Resources.Tags.Soldier))
+        if (other.gameObject.layer == this.enemiesLayer)
         {
+            if (other.gameObject.CompareTag(Resources.Tags.Worker))
+                return;
+
             // play enemy detected sound
 
             // add new target to queue
             this.targets.Add(other.gameObject);
 
-            this.OnAttack();
-
-            //// attack target
-            //if (this.CurrentTarget == null && this.targets.Count > 0)
-            //{
-            //    this.CurrentTarget = this.targets[0];
-            //}
+            this.SetInAttackMode();
         }
     }
 
-    private void OnPatrol()
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == this.enemiesLayer)
+        {
+            if (other.gameObject.CompareTag(Resources.Tags.Worker))
+                return;
+
+            // remove target from queue
+            this.targets.Remove(other.gameObject);
+        }
+    }
+
+    public void SwitchTarget()
+    {
+        if (this.CurrentTarget != null)
+        {
+            bool targetDead = this.CurrentTarget.GetComponent<EnemyHealth>().IsDead;
+
+            if (targetDead)
+            {
+                this.targets.Remove(this.CurrentTarget);
+                this.CurrentTarget = null;
+            }
+            else
+            {
+                // current target is not dead so don't switch to a new one
+                return;
+            }
+        }
+
+        // switch to a new target
+
+        List<GameObject> availableTargets = this.targets;
+
+        for (int i = 0; i < availableTargets.Count; i++)
+        {
+            GameObject current = availableTargets[i];
+
+            if (current == null)
+            {
+                this.targets.RemoveAt(i);
+                continue;
+            }
+
+            bool targetDead = current.GetComponent<EnemyHealth>().IsDead;
+
+            if (targetDead)
+            {
+                this.targets.RemoveAt(i);
+                continue;
+            }
+
+            this.CurrentTarget = current;
+        }
+    }
+
+
+    public void RemoveTarget(GameObject deadTarget)
+    {
+        this.targets.Remove(deadTarget);
+    }
+
+    public void SetInWaitMode()
+    {
+        this.animator.SetBool("InAttack", false);
+        this.animator.SetBool("InScan", false);
+        this.animator.SetBool("InPatrol", false);
+
+        //TODO: add behaviour...
+    }
+
+    public void SetInPatrolMode()
     {
         this.animator.SetBool("InAttack", false);
         this.animator.SetBool("InScan", false);
         this.animator.SetBool("InPatrol", true);
     }
 
-    private void OnScan()
+    public void SetInScanMode()
     {
         this.animator.SetBool("InAttack", false);
         this.animator.SetBool("InPatrol", false);
         this.animator.SetBool("InScan", true);
+
+        //TODO: add behaviour...
     }
 
-    private void OnAttack()
+    public void SetInAttackMode()
     {
         if (this.targets.Count > 0)
         {
+            this.SwitchTarget();
+
             if (this.CurrentTarget == null)
             {
-                this.CurrentTarget = this.targets[0];
+                this.SetInPatrolMode();
             }
-
-            this.animator.SetBool("InScan", false);
-            this.animator.SetBool("InPatrol", false);
-            this.animator.SetBool("InAttack", true);
+            else
+            {
+                this.animator.SetBool("InAttack", true);
+                this.animator.SetBool("InScan", false);
+                this.animator.SetBool("InPatrol", false);
+            }
         }
         else
         {
             Debug.Log("no targets to attack");
-        }
-    }
-
-    public void Shoot(Quaternion direction)
-    {
-        this.timer += Time.deltaTime;
-        if (this.timer >= this.FireRate)
-        {
-            StartCoroutine(this.FirePlasmaBullet(direction));
-        }
-
-        //if (this.timer >= this.FireRate * this.effectsDisplayTime)
-        //{
-        //    this.DisableEffects();
-        //}
-    }
-
-    private IEnumerator FirePlasmaBullet(Quaternion direction)
-    {
-        GameObject bullet = ObjectPooler.Current.GetPooledObject(enumBulletType.Plasma);
-
-        if (bullet != null)
-        {
-            // move the bullet 10m in front of the gun so it does not collide with the player
-            bullet.transform.position = this.transform.position;
-            bullet.transform.rotation = direction;
-            bullet.SetActive(true);
-
-            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 150f;
-
-            yield return new WaitForSeconds(3f);
-
-            bullet.SetActive(false);
-        }
-    }
-
-    public void HitEnemy(GameObject enemy, Vector3 hitPoint)
-    {
-        EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-
-        if (enemyHealth != null)
-        {
-            bool attack = enemy.tag.Equals(Resources.Tags.Worker) == false;
-            bool runAway = enemy.tag.Equals(Resources.Tags.Worker);
-
-            // harm the enemy
-            enemyHealth.TakeDamage(this.DamagePerShot, attack, runAway, hitPoint);
         }
     }
 }
