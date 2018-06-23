@@ -17,7 +17,7 @@ public class ShootingScript : MonoBehaviour
     public float Timer;
     [HideInInspector]
     public float EffectsDisplayTime = 0.2f;
-    
+
     private ParticleSystem gunParticles;
     private Light gunLight;
     private AudioSource gunSoundSource;

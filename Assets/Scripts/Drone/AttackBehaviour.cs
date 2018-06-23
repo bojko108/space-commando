@@ -14,6 +14,8 @@ public class AttackBehaviour : BaseBehaviour
         this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
 
         this.NavAgent.baseOffset = this.DroneLogic.Height * 2;
+
+        GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.white;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -47,5 +49,10 @@ public class AttackBehaviour : BaseBehaviour
         this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
 
         // fire on enemy until he is dead
+    }
+
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.black;
     }
 }

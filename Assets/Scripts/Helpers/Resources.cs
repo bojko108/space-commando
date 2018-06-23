@@ -92,6 +92,8 @@ public static class Resources
         public const string Worker = "Worker";
         public const string Tasks = "Tasks";
         public const string Commands = "Commands";
+        public const string CommandScan = "CommandScan";
+        public const string CommandAttack = "CommandAttack";
         public const string BaseCommanderSpawnPoint = "BaseCommanderSpawnPoint";
         public const string CommanderSpawnPoint = "CommanderSpawnPoint";
         public const string SoldierSpawnPoint = "SoldierSpawnPoint";

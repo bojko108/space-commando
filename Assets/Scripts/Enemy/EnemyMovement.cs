@@ -30,6 +30,8 @@ public class EnemyMovement : MonoBehaviour
 
     // reference to the player
     private GameObject player;
+    //public GameObject KillTarget;
+
     private NavMeshAgent agent;
     private Animator animator;
     private AudioSource audioSource;

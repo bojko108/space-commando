@@ -27,64 +27,128 @@ public class DroneScript : MonoBehaviour
     [Tooltip("Set attack acceleration, used also when catching up with the player")]
     public float AttackAcceleration = 15f;
 
+    [Tooltip("Set sound on enemy detected. If more than 5 enemies are detected this will be repeated")]
+    public AudioClip AlarmSound;
+    [Tooltip("Set drone engine sound")]
+    public AudioClip EngineSound;
+
     private Animator animator;
 
     [HideInInspector]
+    public Transform PlayerTransform;
+
+    [HideInInspector]
+    // for calculating path to POIs
     public GameObject CurrentTarget;
     private List<GameObject> targets;
 
-    private int enemiesLayer;
+    private AudioSource droneEngineAudioSource;
+    private AudioSource droneAlarmAudioSource;
 
     private void Awake()
     {
         this.animator = GetComponent<Animator>();
         this.targets = new List<GameObject>();
 
-        this.enemiesLayer = LayerMask.NameToLayer(Resources.Layers.Enemies);
+        this.PlayerTransform = GameObject.FindGameObjectWithTag(Resources.Tags.Player).transform;
+
+        // set all audio listeners
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+
+        this.droneAlarmAudioSource = audioSources[0];
+        this.droneAlarmAudioSource.clip = this.AlarmSound;
+        //this.droneAlarmAudioSource.volume = 0.5f;
+
+        this.droneEngineAudioSource = audioSources[1];
+        this.droneEngineAudioSource.clip = this.EngineSound;
+        this.droneEngineAudioSource.Play();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            this.SetInPatrolMode();
+            this.SetInScanMode();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            this.SetInScanMode();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
             this.SetInAttackMode();
+        }
+
+        if (Time.frameCount % 20 == 0)
+        {
+            if (this.targets.Count > 0)
+            {
+                this.droneAlarmAudioSource.loop = this.targets.Count >= 5;
+            }
+            else
+            {
+                this.droneAlarmAudioSource.Stop();
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == this.enemiesLayer)
+        // check visibility!
+
+        if (other.gameObject.CompareTag(Resources.Tags.BaseCommander)
+            || other.gameObject.CompareTag(Resources.Tags.Commander)
+            || other.gameObject.CompareTag(Resources.Tags.Soldier))
         {
-            if (other.gameObject.CompareTag(Resources.Tags.Worker))
-                return;
 
-            // play enemy detected sound
+            this.AddTarget(other.gameObject);
 
-            // add new target to queue
-            this.targets.Add(other.gameObject);
-
-            this.SetInAttackMode();
+            // wait for attack command!
+            //this.SetInAttackMode();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == this.enemiesLayer)
+        if (other.gameObject.CompareTag(Resources.Tags.BaseCommander)
+            || other.gameObject.CompareTag(Resources.Tags.Commander)
+            || other.gameObject.CompareTag(Resources.Tags.Soldier))
         {
-            if (other.gameObject.CompareTag(Resources.Tags.Worker))
-                return;
-
             // remove target from queue
-            this.targets.Remove(other.gameObject);
+            this.RemoveTarget(other.gameObject);
         }
+    }
+
+    public void SetInPatrolMode()
+    {
+        this.animator.SetBool("InAttack", false);
+        this.animator.SetBool("InScan", false);
+    }
+
+    public void SetInAttackMode()
+    {
+        if (this.targets.Count > 0)
+        {
+            this.SwitchTarget();
+
+            if (this.CurrentTarget == null)
+            {
+                this.SetInPatrolMode();
+            }
+            else
+            {
+                this.animator.SetBool("InAttack", this.animator.GetBool("InAttack") == false);
+                this.animator.SetBool("InScan", false);
+            }
+        }
+        else
+        {
+            Debug.Log("no targets to attack");
+        }
+    }
+
+    public void SetInScanMode()
+    {
+        this.animator.SetBool("InAttack", false);
+        this.animator.SetBool("InScan", this.animator.GetBool("InScan") == false);
+
+        //TODO: add behaviour...
     }
 
     public void SwitchTarget()
@@ -95,7 +159,7 @@ public class DroneScript : MonoBehaviour
 
             if (targetDead)
             {
-                this.targets.Remove(this.CurrentTarget);
+                this.RemoveTarget(this.CurrentTarget);
                 this.CurrentTarget = null;
             }
             else
@@ -131,57 +195,32 @@ public class DroneScript : MonoBehaviour
         }
     }
 
+    private void AddTarget(GameObject target)
+    {
+        if (this.targets.Contains(target) == false)
+        {
+            bool targetDead = target.GetComponent<EnemyHealth>().IsDead;
+
+            if (targetDead == false)
+            {
+                // add new target to queue
+                this.targets.Add(target);
+
+                if (this.droneAlarmAudioSource.isPlaying == false)
+                {
+                    this.droneAlarmAudioSource.Play();
+                }
+
+                Debug.Log("Enemies: " + this.targets.Count.ToString());
+            }
+        }
+    }
 
     public void RemoveTarget(GameObject deadTarget)
     {
-        this.targets.Remove(deadTarget);
-    }
-
-    public void SetInWaitMode()
-    {
-        this.animator.SetBool("InAttack", false);
-        this.animator.SetBool("InScan", false);
-        this.animator.SetBool("InPatrol", false);
-
-        //TODO: add behaviour...
-    }
-
-    public void SetInPatrolMode()
-    {
-        this.animator.SetBool("InAttack", false);
-        this.animator.SetBool("InScan", false);
-        this.animator.SetBool("InPatrol", true);
-    }
-
-    public void SetInScanMode()
-    {
-        this.animator.SetBool("InAttack", false);
-        this.animator.SetBool("InPatrol", false);
-        this.animator.SetBool("InScan", true);
-
-        //TODO: add behaviour...
-    }
-
-    public void SetInAttackMode()
-    {
-        if (this.targets.Count > 0)
+        if (this.targets.Contains(deadTarget) == false)
         {
-            this.SwitchTarget();
-
-            if (this.CurrentTarget == null)
-            {
-                this.SetInPatrolMode();
-            }
-            else
-            {
-                this.animator.SetBool("InAttack", true);
-                this.animator.SetBool("InScan", false);
-                this.animator.SetBool("InPatrol", false);
-            }
-        }
-        else
-        {
-            Debug.Log("no targets to attack");
+            this.targets.Remove(deadTarget);
         }
     }
 }
