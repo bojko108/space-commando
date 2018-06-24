@@ -16,8 +16,6 @@ public class AttackBehaviour : BaseBehaviour
         this.NavAgent.speed = this.DroneLogic.AttackSpeed;
         this.NavAgent.angularSpeed = this.DroneLogic.AttackAngularSpeed;
         this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
-
-        this.NavAgent.baseOffset = this.DroneLogic.Height * 2;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -31,7 +29,7 @@ public class AttackBehaviour : BaseBehaviour
             return;
         }
 
-        if (Time.frameCount % 20 == 0)
+        if (Time.frameCount % 10 == 0)
         {
             if (this.DestinationReached())
             {
@@ -45,12 +43,9 @@ public class AttackBehaviour : BaseBehaviour
 
         Debug.DrawLine(this.DroneTransform.position, target);
 
-        Vector3 direction = target - this.DroneTransform.position;
-
-        if (Vector3.Angle(direction, this.DroneTransform.forward) < 90f)
+        if (this.CanSeeTarget(target))
         {
-            //CHECK VISIBILITY!
-            // this.DroneTransform.position will be replaced internally with BarrelEnd.position
+            Vector3 direction = target - this.DroneTransform.position;
             this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
         }
     }
@@ -58,5 +53,19 @@ public class AttackBehaviour : BaseBehaviour
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.black;
+    }
+
+    private bool CanSeeTarget(Vector3 target)
+    {
+        //if (Physics.Linecast(this.DroneTransform.position, target) == false)
+        //{
+        Vector3 direction = target - this.DroneTransform.position;
+        if (Vector3.Angle(direction, this.DroneTransform.forward) < this.DroneLogic.MaxAttackAngle)
+        {
+            return true;
+        }
+        //}
+
+        return false;
     }
 }

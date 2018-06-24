@@ -6,10 +6,6 @@ using UnityEngine.Events;
 
 public class DroneScript : MonoBehaviour
 {
-    [Tooltip("Set height for NavMeshAgent.BaseOffset")]
-    public int Height = 6;
-    [Tooltip("Set scan height for NavMeshAgent.BaseOffset. This values is used when in Scan mode.")]
-    public int ScanHeight = 50;
     [Tooltip("Set max distance to the player when in patrol mode")]
     public float MaxDistance = 30f;
 
@@ -34,7 +30,10 @@ public class DroneScript : MonoBehaviour
     [Tooltip("Set drone engine sound")]
     public AudioClip EngineSound;
 
-    private Animator animator;
+    public DroneSignalLight SignalLight;
+    public Transform ScannerTransform;
+    [HideInInspector]
+    public ScannerScript ScannerScript;
 
     [HideInInspector]
     public Transform PlayerTransform;
@@ -44,8 +43,7 @@ public class DroneScript : MonoBehaviour
     public GameObject CurrentTarget;
     private List<GameObject> targets;
 
-    [HideInInspector]
-    public DroneSignalLight SignalLight;
+    private Animator animator;
 
     private AudioSource droneEngineAudioSource;
     private AudioSource droneAlarmAudioSource;
@@ -57,16 +55,24 @@ public class DroneScript : MonoBehaviour
         this.PlayerTransform = GameObject.FindGameObjectWithTag(Resources.Tags.Player).transform;
 
         this.animator = GetComponent<Animator>();
+
         this.SignalLight = GetComponentInChildren<DroneSignalLight>();
 
-        // set all audio listeners
-        AudioSource[] audioSources = GetComponents<AudioSource>();
+        this.ScannerScript = this.ScannerTransform.gameObject.GetComponent<ScannerScript>();
 
-        this.droneAlarmAudioSource = audioSources[0];
+        this.droneAlarmAudioSource = this.gameObject.AddComponent<AudioSource>();
+        this.droneAlarmAudioSource.volume = 0.6f;
+        this.droneAlarmAudioSource.loop = false;
+        this.droneAlarmAudioSource.playOnAwake = false;
         this.droneAlarmAudioSource.clip = this.AlarmSound;
-        //this.droneAlarmAudioSource.volume = 0.5f;
-
-        this.droneEngineAudioSource = audioSources[1];
+        this.droneAlarmAudioSource.spatialBlend = 0f;
+        
+        this.droneEngineAudioSource = this.gameObject.AddComponent<AudioSource>();
+        this.droneEngineAudioSource.spatialBlend = 1f;
+        this.droneEngineAudioSource.minDistance = 20f;
+        this.droneEngineAudioSource.maxDistance = 100f;
+        this.droneEngineAudioSource.loop = true;
+        this.droneEngineAudioSource.playOnAwake = false;
         this.droneEngineAudioSource.clip = this.EngineSound;
         this.droneEngineAudioSource.Play();
     }
@@ -118,8 +124,13 @@ public class DroneScript : MonoBehaviour
 
     public void SetInPatrolMode()
     {
-        this.animator.SetBool("InAttack", false);
+        if (this.animator.GetBool("InScan"))
+        {
+            this.ScannerScript.InteruptScan();
+        }
+
         this.animator.SetBool("InScan", false);
+        this.animator.SetBool("InAttack", false);
     }
 
     public void SetInAttackMode()
@@ -134,6 +145,11 @@ public class DroneScript : MonoBehaviour
             }
             else
             {
+                if (this.animator.GetBool("InScan"))
+                {
+                    this.ScannerScript.InteruptScan();
+                }
+
                 this.animator.SetBool("InAttack", this.animator.GetBool("InAttack") == false);
                 this.animator.SetBool("InScan", false);
             }
@@ -147,9 +163,16 @@ public class DroneScript : MonoBehaviour
     public void SetInScanMode()
     {
         this.animator.SetBool("InAttack", false);
-        this.animator.SetBool("InScan", this.animator.GetBool("InScan") == false);
 
-        //TODO: add behaviour...
+        if (this.animator.GetBool("InScan"))
+        {
+            this.ScannerScript.InteruptScan();
+            this.animator.SetBool("InScan", false);
+        }
+        else
+        {
+            this.animator.SetBool("InScan", true);
+        }
     }
 
     public void SwitchTarget()

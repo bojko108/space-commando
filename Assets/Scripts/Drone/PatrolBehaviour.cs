@@ -10,8 +10,6 @@ public class PatrolBehaviour : BaseBehaviour
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
         this.DroneLogic.SignalLight.DronMode = enumDronMode.Patrol;
-
-        this.NavAgent.baseOffset = this.DroneLogic.Height;
     }
     
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
