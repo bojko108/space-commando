@@ -47,7 +47,7 @@ public class DroneSignalLight : MonoBehaviour
                     this.lightSource.color = this.PatrolColor;
                     break;
             }
-            
+
             yield return new WaitForSeconds(this.BlinkTime);
             this.lightSource.intensity = this.BlinkIntensity;
             yield return new WaitForSeconds(this.BlinkTime);

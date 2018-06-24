@@ -21,6 +21,7 @@ public class GameManagerScript : MonoBehaviour
     private GameObject pauseMenu;
     private GameObject tasks;
     private GameObject player;
+    private GameObject drone;
     private ShipEngineScript shipEngine;
 
     // displays important messages to the player
@@ -58,6 +59,7 @@ public class GameManagerScript : MonoBehaviour
         this.RegisterEvents();
 
         this.player = GameObject.FindGameObjectWithTag(Resources.Tags.Player);
+        this.drone = GameObject.FindGameObjectWithTag(Resources.Tags.Drone);
         this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<ShipEngineScript>();
         this.tasks = GameObject.FindGameObjectWithTag(Resources.Tags.Tasks);
         this.infoText = GameObject.FindGameObjectWithTag(Resources.Tags.InfoText);
@@ -393,10 +395,10 @@ public class GameManagerScript : MonoBehaviour
             this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Drone));
             this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Minimap);
 
-            #region SET PLAYER PROPERTIES
-
             if (savedGame)
             {
+                #region SET PLAYER PROPERTIES
+
                 Player savedPlayer = this.ProgressInGame.Player as Player;
                 this.player.transform.position = savedPlayer.Position.ToVector3();
                 this.player.transform.rotation = Quaternion.Euler(savedPlayer.Rotation.ToVector3());
@@ -406,8 +408,18 @@ public class GameManagerScript : MonoBehaviour
 
                 this.player.GetComponent<PlayerHealth>().SetLevels(savedPlayer.HealthLevel, savedPlayer.OxygenLevel);
 
-                // if the player has found hte main computer password
+                // if the player has found the main computer password
                 this.player.GetComponent<PlayerHealth>().HaveOxygen = savedPlayer.HaveOxygen;
+
+                #endregion
+
+                #region SET DRONE PROPERTIES
+
+                Drone savedDrone = this.ProgressInGame.Drone as Drone;
+                this.drone.transform.position = savedDrone.Position.ToVector3();
+                this.drone.transform.rotation = Quaternion.Euler(savedDrone.Rotation.ToVector3());
+
+                this.drone.GetComponent<DroneScript>().SetStatus(savedDrone);
             }
             // else use starting properties
 

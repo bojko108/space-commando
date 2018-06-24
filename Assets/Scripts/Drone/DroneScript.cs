@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.SaveLoad;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -245,6 +246,23 @@ public class DroneScript : MonoBehaviour
         if (this.targets.Contains(deadTarget) == false)
         {
             this.targets.Remove(deadTarget);
+        }
+    }
+
+    /// <summary>
+    /// used when loading saved game
+    /// </summary>
+    /// <param name="savedDrone"></param>
+    public void SetStatus(Drone savedDrone)
+    {
+        if (savedDrone.InScan)
+        {
+            this.SetInScanMode();
+        }
+
+        if (savedDrone.InAttack)
+        {
+            this.SetInAttackMode();
         }
     }
 }

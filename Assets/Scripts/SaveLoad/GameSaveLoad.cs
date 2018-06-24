@@ -52,9 +52,14 @@ namespace Assets.Scripts.SaveLoad
         public static void Save(GameProgress gameProgress)
         {
             Player player = SavePlayer();
-            List<Character> enemies = SaveEnemies();
 
+            Drone drone = SaveDrone();
+
+            List<Character> enemies = SaveEnemies();
+            
             gameProgress.Player = player;
+
+            gameProgress.Drone = drone;
 
             gameProgress.Enemies = new List<Character>();
             gameProgress.Enemies.AddRange(enemies);
@@ -112,6 +117,25 @@ namespace Assets.Scripts.SaveLoad
             player.Rotation = rotation;
 
             return player;
+        }
+
+        private static Drone SaveDrone()
+        {
+            GameObject droneGO = GameObject.FindGameObjectWithTag(Resources.Tags.Drone);
+
+            Drone drone = new Drone();
+            drone.Tag = droneGO.tag;
+            drone.InAttack = droneGO.GetComponent<Animator>().GetBool("InAttack");
+            drone.InScan = droneGO.GetComponent<Animator>().GetBool("InScan");
+
+            Vector position, rotation;
+
+            ExtractPosition(droneGO.transform, out position, out rotation);
+
+            drone.Position = position;
+            drone.Rotation = rotation;
+
+            return drone;
         }
 
         /// <summary>

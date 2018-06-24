@@ -27,5 +27,7 @@ namespace Assets.Scripts.SaveLoad
         /// enemies saved data
         /// </summary>
         public List<Character> Enemies;
+
+        public Drone Drone;
     }
 }

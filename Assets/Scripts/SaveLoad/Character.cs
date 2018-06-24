@@ -50,6 +50,13 @@ namespace Assets.Scripts.SaveLoad
         public bool HaveOxygen;
     }
 
+    [Serializable]
+    public class Drone : Character
+    {
+        public bool InScan;
+        public bool InAttack;
+    }
+
     /// <summary>
     /// Enemy data
     /// </summary>
