@@ -77,8 +77,8 @@ public class ScannerScript : MonoBehaviour
         line.positionCount = corners.Length;
         line.startColor = Color.blue;
         line.endColor = Color.blue;
-        line.startWidth = 2f;
-        line.endWidth = 2f;
+        line.startWidth = 1f;
+        line.endWidth = 1f;
 
         line.SetPositions(corners);
 

@@ -34,9 +34,10 @@ public class ScanBehaviour : BaseBehaviour
                     // calculate path to found targets
                     
                     Transform target = this.DroneLogic.ScannerScript.Targets[i];
-
+                    
                     NavMeshPath path = new NavMeshPath();
-                    this.NavAgent.CalculatePath(target.position, path);
+                    //this.NavAgent.CalculatePath(target.position, path);
+                    NavMesh.CalculatePath(this.DroneLogic.PlayerTransform.position, target.position, NavMesh.AllAreas, path);
 
                     if (path.status != NavMeshPathStatus.PathInvalid)
                     {
