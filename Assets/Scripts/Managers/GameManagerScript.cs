@@ -341,7 +341,7 @@ public class GameManagerScript : MonoBehaviour
         GameObject.FindGameObjectWithTag(Resources.Tags.MainComputer).FindChildrenByName(Resources.Various.DesktopScreen)[0].GetComponent<SpriteRenderer>().sprite = this.LoginAccepted;
 
         // add storage room and buildings layer to the radar
-        this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.StorageRoom));
+        //this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.StorageRoom));
         this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Buildings);
 
         // increase detect distance for soldiers
@@ -390,8 +390,8 @@ public class GameManagerScript : MonoBehaviour
         else
         {
             // add main control room and spaceship to the radar
-            this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.MainComputer));
-            this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Ship));
+            //this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.MainComputer));
+            //this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Ship));
             this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Drone));
             this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Minimap);
 

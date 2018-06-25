@@ -1,19 +1,33 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+[Serializable]
+public class ScannerTarget
+{
+    public Transform Target;
+    public GameObject IconPrefab;
+    [Tooltip("This is the distance from the player position")]
+    public Vector3 IconOffset;
+}
+
 public class ScannerScript : MonoBehaviour
 {
     public AudioClip ScannerSound;
+    public Material DirectionsMaterial;
     public Vector3 IncreaseSize;
     public Vector3 TargetSize;
 
     // make this private!
-    public Transform[] Targets;
+    public ScannerTarget[] Targets;
 
     [HideInInspector]
     public bool ScanFinished = false;
+
+    private Transform playerTransform;
 
     private AudioSource scannerAudioSource;
 
@@ -31,6 +45,8 @@ public class ScannerScript : MonoBehaviour
 
         this.scannerTransform = this.transform;
         this.initialScale = this.scannerTransform.localScale;
+
+        this.playerTransform = GameObject.FindGameObjectWithTag(Resources.Tags.Player).transform;
     }
 
     public void InitiateScan()
@@ -70,24 +86,48 @@ public class ScannerScript : MonoBehaviour
         }
     }
 
-    public void AddDirections(Transform target, Vector3[] corners)
+    public void AddDirections(ScannerTarget target, Vector3[] corners)
     {
-        GameObject lineGameObject = new GameObject(target.name + " - directions");
+        #region create target icon
+
+        // rotation from player's position to first corner
+        Quaternion rotationToTarget = Quaternion.LookRotation(corners[1] - this.playerTransform.position);
+
+        // icon's position
+        Vector3 iconPosition = this.playerTransform.position + rotationToTarget * target.IconOffset;
+
+        // create icon game object at calculated location
+        GameObject iconGameObject = GameObject.Instantiate(target.IconPrefab);
+        iconGameObject.transform.position = iconPosition;
+
+        // rotate towards player's position
+        iconGameObject.transform.LookAt(this.playerTransform.position);
+
+        this.directions.Add(iconGameObject);
+
+        #endregion
+
+        #region create direction line
+
+        GameObject lineGameObject = new GameObject(target.Target.name + " - directions");
         LineRenderer line = lineGameObject.AddComponent<LineRenderer>();
         line.positionCount = corners.Length;
         line.startColor = Color.blue;
         line.endColor = Color.blue;
         line.startWidth = 1f;
         line.endWidth = 1f;
+        line.material = this.DirectionsMaterial;
 
         line.SetPositions(corners);
 
         this.directions.Add(lineGameObject);
+
+        #endregion
     }
 
     public void RemoveDirections()
     {
-        for(int i = 0; i < this.directions.Count; i++)
+        for (int i = 0; i < this.directions.Count; i++)
         {
             Destroy(this.directions[i]);
         }

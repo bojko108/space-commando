@@ -31,22 +31,16 @@ public class ScanBehaviour : BaseBehaviour
             {
                 for (int i = 0; i < this.DroneLogic.ScannerScript.Targets.Length; i++)
                 {
-                    // calculate path to found targets
-                    
-                    Transform target = this.DroneLogic.ScannerScript.Targets[i];
+                    ScannerTarget target = this.DroneLogic.ScannerScript.Targets[i];
                     
                     NavMeshPath path = new NavMeshPath();
-                    //this.NavAgent.CalculatePath(target.position, path);
-                    NavMesh.CalculatePath(this.DroneLogic.PlayerTransform.position, target.position, NavMesh.AllAreas, path);
+
+                    // calculate path from player to scan targets
+                    NavMesh.CalculatePath(this.DroneLogic.PlayerTransform.position, target.Target.position, NavMesh.AllAreas, path);
 
                     if (path.status != NavMeshPathStatus.PathInvalid)
                     {
                         this.DroneLogic.ScannerScript.AddDirections(target, path.corners);
-
-                        //for (int k = 1; k < path.corners.Length; k++)
-                        //{
-                        //    Debug.DrawLine(path.corners[k - 1], path.corners[k]);
-                        //}   
                     }
                 }
 

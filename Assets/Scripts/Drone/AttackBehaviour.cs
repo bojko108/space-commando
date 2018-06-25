@@ -13,6 +13,7 @@ public class AttackBehaviour : BaseBehaviour
 
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.white;
 
+        this.NavAgent.updateRotation = false;
         this.NavAgent.speed = this.DroneLogic.AttackSpeed;
         this.NavAgent.angularSpeed = this.DroneLogic.AttackAngularSpeed;
         this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
@@ -43,29 +44,55 @@ public class AttackBehaviour : BaseBehaviour
 
         Debug.DrawLine(this.DroneTransform.position, target);
 
+
+
+
+        Vector3 direction = target - this.DroneTransform.position;
+
+        // look at target
+        this.DroneTransform.rotation = Quaternion.Slerp(this.DroneTransform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * this.DroneLogic.AttackAngularSpeed);
+
+        // shoot at target
         if (this.CanSeeTarget(target))
         {
-            Vector3 direction = target - this.DroneTransform.position;
             this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
         }
+
+
+        //if (this.CanSeeTarget(target))
+        //{
+        //    Vector3 direction = target - this.DroneTransform.position;
+        //    this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
+        //}
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        this.NavAgent.updateRotation = true;
+
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.black;
     }
 
     private bool CanSeeTarget(Vector3 target)
     {
-        //if (Physics.Linecast(this.DroneTransform.position, target) == false)
-        //{
         Vector3 direction = target - this.DroneTransform.position;
         if (Vector3.Angle(direction, this.DroneTransform.forward) < this.DroneLogic.MaxAttackAngle)
         {
-            return true;
+            return Physics.Linecast(this.DroneTransform.position, target, LayerMask.GetMask(Resources.Layers.Buildings)) == false;
         }
-        //}
 
         return false;
+
+        //if (Physics.Linecast(this.DroneTransform.position, target, LayerMask.GetMask(Resources.Layers.Buildings)) == false)
+        //{
+        //    // if there is no buildings between the drone and the target
+        //    Vector3 direction = target - this.DroneTransform.position;
+        //    if (Vector3.Angle(direction, this.DroneTransform.forward) < this.DroneLogic.MaxAttackAngle)
+        //    {
+        //        return true;
+        //    }
+        //}
+
+        //return false;
     }
 }

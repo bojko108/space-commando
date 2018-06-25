@@ -151,6 +151,8 @@ public class DroneScript : MonoBehaviour
                     this.ScannerScript.InteruptScan();
                 }
 
+                this.targets.Clear();
+
                 this.animator.SetBool("InAttack", this.animator.GetBool("InAttack") == false);
                 this.animator.SetBool("InScan", false);
             }
