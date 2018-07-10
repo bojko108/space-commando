@@ -28,7 +28,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _DistortStrength: 1
-    - _DistortTimeFactor: 0.384
+    - _DistortTimeFactor: 0.427
     - _IntersectPower: 3
     - _RimStrength: 0.8
     m_Colors:

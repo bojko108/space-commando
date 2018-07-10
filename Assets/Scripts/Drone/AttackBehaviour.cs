@@ -34,7 +34,7 @@ public class AttackBehaviour : BaseBehaviour
         {
             if (this.DestinationReached())
             {
-                base.GetRandomDestination(this.DroneLogic.CurrentTarget.transform.position, 20f, NavMesh.AllAreas);
+                base.GetRandomDestination(this.DroneLogic.CurrentTarget.transform.position, 10f, NavMesh.AllAreas);
                 this.NavAgent.SetDestination(this.DroneLogic.CurrentTarget.transform.position);
             }
         }
@@ -57,6 +57,7 @@ public class AttackBehaviour : BaseBehaviour
         {
             this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
         }
+
 
 
         //if (this.CanSeeTarget(target))

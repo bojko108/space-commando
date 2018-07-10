@@ -8,17 +8,23 @@ using UnityEngine.AI;
 [Serializable]
 public class ScannerTarget
 {
+    [Tooltip("Target position")]
     public Transform Target;
+    [Tooltip("Icon prebab used to display directions")]
     public GameObject IconPrefab;
-    [Tooltip("This is the distance from the player position")]
+    [Tooltip("This is the icon offset from the player's position")]
     public Vector3 IconOffset;
 }
 
 public class ScannerScript : MonoBehaviour
 {
+    [Tooltip("Sound played when scan is initiated")]
     public AudioClip ScannerSound;
+    [Tooltip("Material used for drawing direction lines")]
     public Material DirectionsMaterial;
+    [Tooltip("Scanner increase size for every frame")]
     public Vector3 IncreaseSize;
+    [Tooltip("Max scanner size")]
     public Vector3 TargetSize;
 
     // make this private!
@@ -90,17 +96,16 @@ public class ScannerScript : MonoBehaviour
     {
         #region create target icon
 
-        // rotation from player's position to first corner
+        // calculate rotation from player's position to first corner
         Quaternion rotationToTarget = Quaternion.LookRotation(corners[1] - this.playerTransform.position);
 
-        // icon's position
+        // calculate icon's position = player.position + icon offset
         Vector3 iconPosition = this.playerTransform.position + rotationToTarget * target.IconOffset;
 
         // create icon game object at calculated location
         GameObject iconGameObject = GameObject.Instantiate(target.IconPrefab);
         iconGameObject.transform.position = iconPosition;
-
-        // rotate towards player's position
+        // rotate towards player
         iconGameObject.transform.LookAt(this.playerTransform.position);
 
         this.directions.Add(iconGameObject);
@@ -110,6 +115,7 @@ public class ScannerScript : MonoBehaviour
         #region create direction line
 
         GameObject lineGameObject = new GameObject(target.Target.name + " - directions");
+
         LineRenderer line = lineGameObject.AddComponent<LineRenderer>();
         line.positionCount = corners.Length;
         line.startColor = Color.blue;
@@ -117,7 +123,8 @@ public class ScannerScript : MonoBehaviour
         line.startWidth = 1f;
         line.endWidth = 1f;
         line.material = this.DirectionsMaterial;
-
+        
+        //TODO: increase line height above ground
         line.SetPositions(corners);
 
         this.directions.Add(lineGameObject);
