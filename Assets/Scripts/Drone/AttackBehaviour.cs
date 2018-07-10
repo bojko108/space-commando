@@ -23,42 +23,45 @@ public class AttackBehaviour : BaseBehaviour
     {
         this.DroneLogic.SwitchTarget();
 
-        if (this.DroneLogic.CurrentTarget == null)
-        {
-            // no other targets so go to patrol mode....
-            this.DroneLogic.SetInPatrolMode();
-            return;
-        }
-
         if (Time.frameCount % 10 == 0)
         {
-            if (this.DestinationReached())
+            if (this.DroneLogic.CurrentTarget == null)
             {
-                base.GetRandomDestination(this.DroneLogic.CurrentTarget.transform.position, 10f, NavMesh.AllAreas);
-                this.NavAgent.SetDestination(this.DroneLogic.CurrentTarget.transform.position);
+                if (this.DestinationReached())
+                {
+                    Vector3 destination = this.GetRandomDestination(this.PlayerTransform.position, this.DroneLogic.MaxDistance, NavMesh.AllAreas);
+                    this.NavAgent.SetDestination(destination);
+                }
+            }
+            else
+            {
+                if (this.DestinationReached())
+                {
+                    base.GetRandomDestination(this.DroneLogic.CurrentTarget.transform.position, 10f, NavMesh.AllAreas);
+                    this.NavAgent.SetDestination(this.DroneLogic.CurrentTarget.transform.position);
+                }
             }
         }
 
-        Vector3 target = this.DroneLogic.CurrentTarget.transform.position;
-        target.y += 2f;
-
-        Debug.DrawLine(this.DroneTransform.position, target);
-
-
-
-
-        Vector3 direction = target - this.DroneTransform.position;
-
-        // look at target
-        this.DroneTransform.rotation = Quaternion.Slerp(this.DroneTransform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * this.DroneLogic.AttackAngularSpeed);
-
-        // shoot at target
-        if (this.CanSeeTarget(target))
+        if (this.DroneLogic.CurrentTarget != null)
         {
-            this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
+            Vector3 target = this.DroneLogic.CurrentTarget.transform.position;
+            target.y += 2f;
+
+            Debug.DrawLine(this.DroneTransform.position, target);
+
+
+            Vector3 direction = target - this.DroneTransform.position;
+
+            // look at target
+            this.DroneTransform.rotation = Quaternion.Slerp(this.DroneTransform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * this.DroneLogic.AttackAngularSpeed);
+
+            // shoot at target
+            if (this.CanSeeTarget(target))
+            {
+                this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
+            }
         }
-
-
 
         //if (this.CanSeeTarget(target))
         //{

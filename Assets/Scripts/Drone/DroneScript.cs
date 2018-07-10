@@ -67,7 +67,7 @@ public class DroneScript : MonoBehaviour
         this.droneAlarmAudioSource.playOnAwake = false;
         this.droneAlarmAudioSource.clip = this.AlarmSound;
         this.droneAlarmAudioSource.spatialBlend = 0f;
-        
+
         this.droneEngineAudioSource = this.gameObject.AddComponent<AudioSource>();
         this.droneEngineAudioSource.spatialBlend = 1f;
         this.droneEngineAudioSource.minDistance = 20f;
@@ -136,31 +136,41 @@ public class DroneScript : MonoBehaviour
 
     public void SetInAttackMode()
     {
-        if (this.targets.Count > 0)
+        if (this.animator.GetBool("InScan"))
         {
-            this.SwitchTarget();
-
-            if (this.CurrentTarget == null)
-            {
-                this.SetInPatrolMode();
-            }
-            else
-            {
-                if (this.animator.GetBool("InScan"))
-                {
-                    this.ScannerScript.InteruptScan();
-                }
-
-                //this.targets.Clear();
-
-                this.animator.SetBool("InAttack", this.animator.GetBool("InAttack") == false);
-                this.animator.SetBool("InScan", false);
-            }
+            this.ScannerScript.InteruptScan();
         }
-        else
-        {
-            Debug.Log("no targets to attack");
-        }
+
+        //this.targets.Clear();
+
+        this.animator.SetBool("InAttack", this.animator.GetBool("InAttack") == false);
+        this.animator.SetBool("InScan", false);
+
+        //if (this.targets.Count > 0)
+        //{
+        //    this.SwitchTarget();
+
+        //    if (this.CurrentTarget == null)
+        //    {
+        //        this.SetInPatrolMode();
+        //    }
+        //    else
+        //    {
+        //        if (this.animator.GetBool("InScan"))
+        //        {
+        //            this.ScannerScript.InteruptScan();
+        //        }
+
+        //        //this.targets.Clear();
+
+        //        this.animator.SetBool("InAttack", this.animator.GetBool("InAttack") == false);
+        //        this.animator.SetBool("InScan", false);
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.Log("no targets to attack");
+        //}
     }
 
     public void SetInScanMode()
