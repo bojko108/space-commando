@@ -59,12 +59,6 @@ public class AttackBehaviour : BaseBehaviour
                 this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
             }
         }
-
-        //if (this.CanSeeTarget(target))
-        //{
-        //    Vector3 direction = target - this.DroneTransform.position;
-        //    this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
-        //}
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -87,16 +81,6 @@ public class AttackBehaviour : BaseBehaviour
 
         return false;
 
-        //if (Physics.Linecast(this.DroneTransform.position, target, LayerMask.GetMask(Resources.Layers.Buildings)) == false)
-        //{
-        //    // if there is no buildings between the drone and the target
-        //    Vector3 direction = target - this.DroneTransform.position;
-        //    if (Vector3.Angle(direction, this.DroneTransform.forward) < this.DroneLogic.MaxAttackAngle)
-        //    {
-        //        return true;
-        //    }
-        //}
-
-        //return false;
+        // check distance to target?
     }
 }

@@ -11,10 +11,17 @@ public enum enumDronMode
 
 public class DroneSignalLight : MonoBehaviour
 {
+    [Tooltip("Set signal light blink time in seconds")]
+    [Range(0.1f, 3f)]
     public float BlinkTime = 1f;
+    [Tooltip("Set signal light blink intensity")]
+    [Range(0.01f, 1f)]
     public float BlinkIntensity = 0.2f;
+    [Tooltip("Set drone signal light color when in partol mode")]
     public Color PatrolColor;
+    [Tooltip("Set drone signal light color when in scan mode")]
     public Color ScanColor;
+    [Tooltip("Set drone signal light color when in attack mode")]
     public Color AttackColor;
 
     [HideInInspector]
@@ -50,6 +57,7 @@ public class DroneSignalLight : MonoBehaviour
 
             yield return new WaitForSeconds(this.BlinkTime);
             this.lightSource.intensity = this.BlinkIntensity;
+
             yield return new WaitForSeconds(this.BlinkTime);
             this.lightSource.intensity = this.initialIntensity;
         }

@@ -14,7 +14,7 @@ public class PatrolBehaviour : BaseBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (Time.frameCount % 20 == 0 && this.DestinationReached())
+        if (Time.frameCount % 20 == 0)
         {
             if (this.IsCloseToPlayer())
             {
@@ -22,8 +22,11 @@ public class PatrolBehaviour : BaseBehaviour
                 this.NavAgent.angularSpeed = this.DroneLogic.PatrolAngularSpeed;
                 this.NavAgent.acceleration = this.DroneLogic.PatrolAcceleration;
 
-                Vector3 destination = this.GetRandomDestination(this.PlayerTransform.position, this.DroneLogic.MaxDistance, NavMesh.AllAreas);
-                this.NavAgent.SetDestination(destination);
+                if (this.DestinationReached())
+                {
+                    Vector3 destination = this.GetRandomDestination(this.PlayerTransform.position, this.DroneLogic.MaxDistance, NavMesh.AllAreas);
+                    this.NavAgent.SetDestination(destination);
+                }
             }
             else
             {

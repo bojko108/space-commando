@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ebdab99957f7a342b92c31ad7514218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlinkTime: 0.3
+  BlinkTime: 0.5
   BlinkIntensity: 0.2
   PatrolColor: {r: 0.115645, g: 0.8773585, b: 0, a: 0}
   ScanColor: {r: 0, g: 1, b: 0.96124196, a: 0}

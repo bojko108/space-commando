@@ -134,9 +134,7 @@ public class DroneScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(Resources.Tags.BaseCommander)
-            || other.gameObject.CompareTag(Resources.Tags.Commander)
-            || other.gameObject.CompareTag(Resources.Tags.Soldier))
+        if (this.IsEnemy(other.gameObject))
         {
             this.AddTarget(other.gameObject);
         }
@@ -144,13 +142,8 @@ public class DroneScript : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag(Resources.Tags.BaseCommander)
-            || other.gameObject.CompareTag(Resources.Tags.Commander)
-            || other.gameObject.CompareTag(Resources.Tags.Soldier))
-        {
-            // remove target from queue
-            this.RemoveTarget(other.gameObject);
-        }
+        // remove target from queue
+        this.RemoveTarget(other.gameObject);
     }
 
 
@@ -167,7 +160,7 @@ public class DroneScript : MonoBehaviour
             this.SetInAttackMode();
         }
     }
-    
+
     public void SetInPatrolMode()
     {
         if (this.animator.GetBool("InScan"))
@@ -299,12 +292,19 @@ public class DroneScript : MonoBehaviour
         }
     }
 
-    public void RemoveTarget(GameObject deadTarget)
+    private void RemoveTarget(GameObject target)
     {
-        if (this.targets.Contains(deadTarget) == false)
+        if (this.targets.Contains(target))
         {
-            this.targets.Remove(deadTarget);
+            this.targets.Remove(target);
         }
+    }
+
+    private bool IsEnemy(GameObject target)
+    {
+        return (target.CompareTag(Resources.Tags.BaseCommander)
+            || target.CompareTag(Resources.Tags.Commander)
+            || target.CompareTag(Resources.Tags.Soldier));
     }
 
     #endregion
