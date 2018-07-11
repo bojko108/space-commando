@@ -135,7 +135,7 @@ Transform:
   - {fileID: 4022828101005138}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 150, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4287160945922888
 Transform:
   m_ObjectHideFlags: 1
@@ -594,21 +594,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46e85f7bf32168e42b9e00201234dacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnterScanModeKey: 113
+  EnterAttackModeKey: 101
   MaxDistance: 40
   PatrolSpeed: 4
   PatrolAngularSpeed: 140
   PatrolAcceleration: 10
   AttackSpeed: 25
-  AttackAngularSpeed: 4
+  AttackAngularSpeed: 2
   AttackAcceleration: 10
-  MaxAttackAngle: 10
+  MaxAttackAngle: 20
   AlarmSound: {fileID: 8300000, guid: 00481beaa0e2fd649bcddb036727968c, type: 3}
   EngineSound: {fileID: 8300000, guid: 355c0ba205074ce45a8988e3882f9a1b, type: 3}
+  PlayerTransform: {fileID: 0}
+  CurrentTarget: {fileID: 0}
   SignalLight: {fileID: 114860746308675246}
   ScannerTransform: {fileID: 4022828101005138}
   ScannerScript: {fileID: 0}
-  PlayerTransform: {fileID: 0}
-  CurrentTarget: {fileID: 0}
+  DroneBatterySlider: {fileID: 0}
+  MaxBatteryLevel: 200
+  RechargeFactor: 0.25
 --- !u!114 &114698845240051414
 MonoBehaviour:
   m_ObjectHideFlags: 1

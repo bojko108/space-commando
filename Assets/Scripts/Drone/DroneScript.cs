@@ -4,50 +4,74 @@ using System.Collections.Generic;
 using Assets.Scripts.SaveLoad;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class DroneScript : MonoBehaviour
 {
-    [Tooltip("Set max distance to the player when in patrol mode")]
+    #region Properties
+
+    [Tooltip("Select key for activating scan mode")]
+    public KeyCode EnterScanModeKey = KeyCode.Q;
+    [Tooltip("Select key for activating attack mode")]
+    public KeyCode EnterAttackModeKey = KeyCode.E;
+
+    [Tooltip("Set max distance from the player when in patrol mode")]
     public float MaxDistance = 30f;
 
-    [Tooltip("Set speed when in patrol mode")]
+    [Tooltip("Set drone speed when in patrol mode")]
     public float PatrolSpeed = 5f;
-    [Tooltip("Set speed when in patrol mode")]
+    [Tooltip("Set drone angular speed when in patrol mode")]
     public float PatrolAngularSpeed = 140f;
-    [Tooltip("Set speed when in patrol mode")]
+    [Tooltip("Set drone acceleration when in patrol mode")]
     public float PatrolAcceleration = 10f;
 
-    [Tooltip("Set attack speed, used also when catching up with the player")]
+    [Tooltip("Set drone attack speed, used also when catching up with the player")]
     public float AttackSpeed = 15f;
-    [Tooltip("Set attack angular speed, used also when catching up with the player")]
+    [Tooltip("Set drone attack angular speed, used also when catching up with the player")]
     public float AttackAngularSpeed = 200f;
-    [Tooltip("Set attack acceleration, used also when catching up with the player")]
+    [Tooltip("Set drone attack acceleration, used also when catching up with the player")]
     public float AttackAcceleration = 15f;
-    [Tooltip("Max angle at which the drone can shoot at enemies")]
-    public float MaxAttackAngle = 90f;
+    [Tooltip("Set max angle at which the drone can shoot at enemies")]
+    public float MaxAttackAngle = 60f;
 
-    [Tooltip("Set sound on enemy detected. If more than 5 enemies are detected this will be repeated")]
+    [Tooltip("Sound played on enemy detected. If more than 5 enemies are detected this will be repeated")]
     public AudioClip AlarmSound;
     [Tooltip("Set drone engine sound")]
     public AudioClip EngineSound;
 
+    [HideInInspector]
+    public Transform PlayerTransform;
+    [HideInInspector]
+    public GameObject CurrentTarget;    // for calculating path to POIs
+    private List<GameObject> targets;
+
+    [Tooltip("Set drone light - signals current drone mode")]
     public DroneSignalLight SignalLight;
+    [Tooltip("Set drone scanner position")]
     public Transform ScannerTransform;
     [HideInInspector]
     public ScannerScript ScannerScript;
 
-    [HideInInspector]
-    public Transform PlayerTransform;
+    [Tooltip("Slider, used to update battery level on screen")]
+    public Slider DroneBatterySlider;
+    [Tooltip("Set drone battery level when in attack mode")]
+    [Range(1f, 200f)]
+    public float MaxBatteryLevel = 100f;
+    [Tooltip("Set battery recharge factor - use large value for fast recharge")]
+    [Range(0f, 1f)]
+    public float RechargeFactor = 0.5f;
 
-    [HideInInspector]
-    // for calculating path to POIs
-    public GameObject CurrentTarget;
-    private List<GameObject> targets;
+    // used to stop attack mode and battery draining process
+    private bool endAttackMode = false;
+    // current battery level
+    private float batteryLevel;
 
     private Animator animator;
 
     private AudioSource droneEngineAudioSource;
     private AudioSource droneAlarmAudioSource;
+
+    #endregion
 
     private void Awake()
     {
@@ -76,15 +100,20 @@ public class DroneScript : MonoBehaviour
         this.droneEngineAudioSource.playOnAwake = false;
         this.droneEngineAudioSource.clip = this.EngineSound;
         this.droneEngineAudioSource.Play();
+
+        this.batteryLevel = this.MaxBatteryLevel;
+        this.DroneBatterySlider.minValue = 0;
+        this.DroneBatterySlider.maxValue = this.MaxBatteryLevel;
+        this.DroneBatterySlider.value = this.MaxBatteryLevel;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(this.EnterScanModeKey))
         {
             this.SetInScanMode();
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(this.EnterAttackModeKey))
         {
             this.SetInAttackMode();
         }
@@ -101,6 +130,7 @@ public class DroneScript : MonoBehaviour
             }
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -123,6 +153,21 @@ public class DroneScript : MonoBehaviour
         }
     }
 
+
+    // used when loading saved game
+    public void SetStatus(Drone savedDrone)
+    {
+        if (savedDrone.InScan)
+        {
+            this.SetInScanMode();
+        }
+
+        if (savedDrone.InAttack)
+        {
+            this.SetInAttackMode();
+        }
+    }
+    
     public void SetInPatrolMode()
     {
         if (this.animator.GetBool("InScan"))
@@ -188,6 +233,9 @@ public class DroneScript : MonoBehaviour
         }
     }
 
+
+    #region Target managers
+
     public void SwitchTarget()
     {
         if (this.CurrentTarget != null)
@@ -247,8 +295,6 @@ public class DroneScript : MonoBehaviour
                 {
                     this.droneAlarmAudioSource.Play();
                 }
-
-                Debug.Log("Enemies: " + this.targets.Count.ToString());
             }
         }
     }
@@ -261,20 +307,64 @@ public class DroneScript : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// used when loading saved game
-    /// </summary>
-    /// <param name="savedDrone"></param>
-    public void SetStatus(Drone savedDrone)
+    #endregion
+
+
+    #region Battery managers
+
+    private IEnumerator batteryDraining;
+    private IEnumerator batteryCharging;
+
+    public void StartAttackMode()
     {
-        if (savedDrone.InScan)
+        this.endAttackMode = false;
+
+        if (this.batteryDraining != null) StopCoroutine(this.batteryDraining);
+        this.batteryDraining = this.BatteryDrainingEnumerator();
+
+        StartCoroutine(this.batteryDraining);
+    }
+
+    public void EndAttackMode()
+    {
+        this.endAttackMode = true;
+
+        if (this.batteryCharging != null) StopCoroutine(this.batteryCharging);
+        this.batteryCharging = this.BatteryChargingEnumerator();
+
+        StartCoroutine(this.batteryCharging);
+
+        this.SetInPatrolMode();
+    }
+
+    private IEnumerator BatteryDrainingEnumerator()
+    {
+        // stop charging the battery
+        if (this.batteryCharging != null) StopCoroutine(this.batteryCharging);
+
+        while (this.endAttackMode == false && this.batteryLevel > 0)
         {
-            this.SetInScanMode();
+            this.batteryLevel -= 1f;
+            this.DroneBatterySlider.value = this.batteryLevel;
+            yield return new WaitForEndOfFrame();
         }
 
-        if (savedDrone.InAttack)
-        {
-            this.SetInAttackMode();
-        }
+        // the drone has no more battery to continue in attack mode
+
+        this.EndAttackMode();
     }
+
+    private IEnumerator BatteryChargingEnumerator()
+    {
+        while (this.batteryLevel < this.MaxBatteryLevel)
+        {
+            this.batteryLevel += 1f * this.RechargeFactor;
+            this.DroneBatterySlider.value = this.batteryLevel;
+            yield return new WaitForEndOfFrame();
+        }
+
+        // drone's battery is fully charged now
+    }
+
+    #endregion
 }

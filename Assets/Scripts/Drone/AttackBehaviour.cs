@@ -11,6 +11,8 @@ public class AttackBehaviour : BaseBehaviour
 
         this.DroneLogic.SignalLight.DronMode = enumDronMode.Attack;
 
+        this.DroneLogic.StartAttackMode();
+
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.white;
 
         this.NavAgent.updateRotation = false;
@@ -23,23 +25,17 @@ public class AttackBehaviour : BaseBehaviour
     {
         this.DroneLogic.SwitchTarget();
 
-        if (Time.frameCount % 10 == 0)
+        if (Time.frameCount % 10 == 0 && this.DestinationReached())
         {
             if (this.DroneLogic.CurrentTarget == null)
             {
-                if (this.DestinationReached())
-                {
-                    Vector3 destination = this.GetRandomDestination(this.PlayerTransform.position, this.DroneLogic.MaxDistance, NavMesh.AllAreas);
-                    this.NavAgent.SetDestination(destination);
-                }
+                Vector3 destination = this.GetRandomDestination(this.PlayerTransform.position, this.DroneLogic.MaxDistance, NavMesh.AllAreas);
+                this.NavAgent.SetDestination(destination);
             }
             else
             {
-                if (this.DestinationReached())
-                {
-                    base.GetRandomDestination(this.DroneLogic.CurrentTarget.transform.position, 10f, NavMesh.AllAreas);
-                    this.NavAgent.SetDestination(this.DroneLogic.CurrentTarget.transform.position);
-                }
+                base.GetRandomDestination(this.DroneLogic.CurrentTarget.transform.position, 10f, NavMesh.AllAreas);
+                this.NavAgent.SetDestination(this.DroneLogic.CurrentTarget.transform.position);
             }
         }
 
@@ -48,15 +44,16 @@ public class AttackBehaviour : BaseBehaviour
             Vector3 target = this.DroneLogic.CurrentTarget.transform.position;
             target.y += 2f;
 
+#if UNITY_EDITOR
             Debug.DrawLine(this.DroneTransform.position, target);
-
+#endif
 
             Vector3 direction = target - this.DroneTransform.position;
 
             // look at target
             this.DroneTransform.rotation = Quaternion.Slerp(this.DroneTransform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * this.DroneLogic.AttackAngularSpeed);
 
-            // shoot at target
+            // shoot if target is visible
             if (this.CanSeeTarget(target))
             {
                 this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
@@ -75,6 +72,9 @@ public class AttackBehaviour : BaseBehaviour
         this.NavAgent.updateRotation = true;
 
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.black;
+
+        // used to manage drone battery
+        this.DroneLogic.EndAttackMode();
     }
 
     private bool CanSeeTarget(Vector3 target)

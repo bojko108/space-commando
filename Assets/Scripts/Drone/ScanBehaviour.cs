@@ -51,8 +51,6 @@ public class ScanBehaviour : BaseBehaviour
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // destroy calculated directions
-
         this.NavAgent.isStopped = false;
 
         this.DroneLogic.ScannerScript.RemoveDirections();
