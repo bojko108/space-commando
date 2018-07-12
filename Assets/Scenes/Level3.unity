@@ -807,6 +807,61 @@ Prefab:
       propertyPath: m_Radius
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 136671480466278948, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: m_Radius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 136671480466278948, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: m_Center.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 198556192186407278, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198556192186407278, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: TrailModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199972100663531712, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f33ff8b1ce90b3c488a1f6089663f0eb, type: 2}
+    - target: {fileID: 199972100663531712, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 198556192186407278, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0.46226418
+      objectReference: {fileID: 0}
+    - target: {fileID: 198556192186407278, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 0.18534178
+      objectReference: {fileID: 0}
+    - target: {fileID: 198556192186407278, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: ColorModule.gradient.maxGradient.key0.b
+      value: 0.18534178
+      objectReference: {fileID: 0}
+    - target: {fileID: 198556192186407278, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: ColorModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198556192186407278, guid: f71673130ec89e44aa34294cb819de19,
+        type: 2}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f71673130ec89e44aa34294cb819de19, type: 2}
   m_IsPrefabParent: 0
@@ -962,7 +1017,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: 15}
+  m_AnchoredPosition: {x: 20, y: 20}
   m_SizeDelta: {x: 200, y: 70}
   m_Pivot: {x: 0, y: 0}
 --- !u!1001 &363082144
@@ -1004,12 +1059,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 64629054866023930, guid: 4e6bf53b888edb544b8a990aba584c27,
+    - target: {fileID: 33360965432063924, guid: 4e6bf53b888edb544b8a990aba584c27,
         type: 2}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 626420463}
-    - target: {fileID: 33360965432063924, guid: 4e6bf53b888edb544b8a990aba584c27,
+    - target: {fileID: 64629054866023930, guid: 4e6bf53b888edb544b8a990aba584c27,
         type: 2}
       propertyPath: m_Mesh
       value: 
@@ -1656,7 +1711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LaserPrefab: {fileID: 1288394546924368, guid: c7b004c5d0f86454eb8739d16f5a4d86,
     type: 2}
-  PlasmaPrefab: {fileID: 1958032609172276, guid: a0fad3fadeafced4786dec70279d4115,
+  PlasmaPrefab: {fileID: 1543989570842304, guid: d8a8dc5cd13aea244bc3732abc77a1e3,
     type: 2}
   PooledAmount: 20
   WillGrow: 1
@@ -2067,6 +2122,11 @@ Prefab:
       propertyPath: Targets.Array.data[2].Target
       value: 
       objectReference: {fileID: 946052501}
+    - target: {fileID: 114339698014741100, guid: a2080be0aad820b4d835b7fe0584e75c,
+        type: 2}
+      propertyPath: RechargeFactor
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a2080be0aad820b4d835b7fe0584e75c, type: 2}
   m_IsPrefabParent: 0
@@ -2842,7 +2902,7 @@ Prefab:
         type: 2}
       propertyPath: PlasmaPrefab
       value: 
-      objectReference: {fileID: 1958032609172276, guid: a0fad3fadeafced4786dec70279d4115,
+      objectReference: {fileID: 1543989570842304, guid: d8a8dc5cd13aea244bc3732abc77a1e3,
         type: 2}
     - target: {fileID: 114945580090172900, guid: 136c2eaea028da74c843583ba17f42a3,
         type: 2}
@@ -6852,6 +6912,16 @@ Prefab:
       propertyPath: DamageImage
       value: 
       objectReference: {fileID: 1960364116}
+    - target: {fileID: 114362235311376200, guid: 35bf87788dbce1c429037e88df6cea1c,
+        type: 2}
+      propertyPath: StartingHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 114362235311376200, guid: 35bf87788dbce1c429037e88df6cea1c,
+        type: 2}
+      propertyPath: StartingOxygen
+      value: 80
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35bf87788dbce1c429037e88df6cea1c, type: 2}
   m_IsPrefabParent: 0

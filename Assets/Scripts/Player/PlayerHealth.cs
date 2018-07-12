@@ -98,6 +98,8 @@ public class PlayerHealth : MonoBehaviour
         this.OxygenSlider.value = this.CurrentOxygen;
 
         this.HaveOxygen = true;
+
+        StartCoroutine(this.AnimateHealPlayer(this.OxygenSlider));
     }
 
     /// <summary>
@@ -135,14 +137,14 @@ public class PlayerHealth : MonoBehaviour
         this.CurrentHealth = this.StartingHealth;
         this.HealthSlider.value = this.CurrentHealth;
 
-        StartCoroutine(this.AnimateHealPlayer());
+        StartCoroutine(this.AnimateHealPlayer(this.HealthSlider));
     }
 
-    private IEnumerator AnimateHealPlayer()
+    private IEnumerator AnimateHealPlayer(Slider slider)
     {        
-        this.HealthSlider.transform.localScale *= 1.5f;
+        slider.transform.localScale *= 1.5f;
         yield return new WaitForSeconds(0.7f);
-        this.HealthSlider.transform.localScale /= 1.5f;
+        slider.transform.localScale /= 1.5f;
     }
 
     /// <summary>

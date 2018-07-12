@@ -344,8 +344,12 @@ public class DroneScript : MonoBehaviour
 
         while (this.endAttackMode == false && this.batteryLevel > 0)
         {
-            this.batteryLevel -= 1f;
-            this.DroneBatterySlider.value = this.batteryLevel;
+            if (Time.timeScale > 0f)
+            {
+                this.batteryLevel -= 1f;
+                this.DroneBatterySlider.value = this.batteryLevel;
+            }
+
             yield return new WaitForEndOfFrame();
         }
 
@@ -358,8 +362,12 @@ public class DroneScript : MonoBehaviour
     {
         while (this.batteryLevel < this.MaxBatteryLevel)
         {
-            this.batteryLevel += 1f * this.RechargeFactor;
-            this.DroneBatterySlider.value = this.batteryLevel;
+            if (Time.timeScale > 0f)
+            {
+                this.batteryLevel += 1f * this.RechargeFactor;
+                this.DroneBatterySlider.value = this.batteryLevel;
+            }
+
             yield return new WaitForEndOfFrame();
         }
 
