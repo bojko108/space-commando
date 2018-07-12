@@ -715,7 +715,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 3.6570005
   m_BaseOffset: 6
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 56
   m_ObstacleAvoidanceType: 4
 --- !u!198 &198279895364443644
 ParticleSystem:

@@ -11,12 +11,12 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: 
+  - name: Fastest
     cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
+  - name: Normal
+    cost: 10
+  - name: Slowest
+    cost: 100
   - name: 
     cost: 1
   - name: 
