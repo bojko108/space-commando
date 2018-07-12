@@ -955,9 +955,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b638976bc4522994aa1498245faf9924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingHealth: 50000
+  StartingHealth: 200
   CurrentHealth: 0
-  StartingOxygen: 8000
+  StartingOxygen: 150
   CurrentOxygen: 0
   HealthSlider: {fileID: 0}
   OxygenSlider: {fileID: 0}

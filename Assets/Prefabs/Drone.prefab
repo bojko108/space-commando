@@ -612,8 +612,8 @@ MonoBehaviour:
   ScannerTransform: {fileID: 4022828101005138}
   ScannerScript: {fileID: 0}
   DroneBatterySlider: {fileID: 0}
-  MaxBatteryLevel: 200
-  RechargeFactor: 0.25
+  MaxBatteryLevel: 400
+  RechargeFactor: 0.75
 --- !u!114 &114698845240051414
 MonoBehaviour:
   m_ObjectHideFlags: 1

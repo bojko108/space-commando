@@ -55,10 +55,10 @@ public class DroneScript : MonoBehaviour
     [Tooltip("Slider, used to update battery level on screen")]
     public Slider DroneBatterySlider;
     [Tooltip("Set drone battery level when in attack mode")]
-    [Range(1f, 200f)]
+    [Range(1f, 500f)]
     public float MaxBatteryLevel = 100f;
     [Tooltip("Set battery recharge factor - use large value for fast recharge")]
-    [Range(0f, 1f)]
+    [Range(0f, 2f)]
     public float RechargeFactor = 0.5f;
 
     // used to stop attack mode and battery draining process
