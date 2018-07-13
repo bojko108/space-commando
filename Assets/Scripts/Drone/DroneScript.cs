@@ -420,7 +420,7 @@ public class DroneScript : MonoBehaviour
         if (this.colliderShrink != null) StopCoroutine(this.colliderShrink);
 
         // start expanding the collider
-        while (this.detectionCollider.radius < 100f)
+        while (this.detectionCollider.radius < 200f)
         {
             if (Time.timeScale > 0f)
             {

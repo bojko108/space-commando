@@ -345,7 +345,7 @@ public class GameManagerScript : MonoBehaviour
         this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Buildings);
 
         // increase detect distance for soldiers
-        this.IncreaseDetectDistance(Resources.Tags.Soldier, 2f);
+        //this.IncreaseDetectDistance(Resources.Tags.Soldier, 2f);
     }
 
     /// <summary>
@@ -358,10 +358,10 @@ public class GameManagerScript : MonoBehaviour
         this.FinishTask(Resources.Tasks.FindDarkMatterModule);
 
         // increase detect distance for commanders
-        this.IncreaseDetectDistance(Resources.Tags.Commander, 3f);
+        this.IncreaseDetectDistance(Resources.Tags.Commander, 2f);
 
         // increase detect distance for soldiers
-        this.IncreaseDetectDistance(Resources.Tags.Soldier, 4f);
+        this.IncreaseDetectDistance(Resources.Tags.Soldier, 2f);
 
         if (savedGame == false)
         {

@@ -14,9 +14,9 @@ NavMeshProjectSettings:
   - name: Fastest
     cost: 1
   - name: Normal
-    cost: 10
+    cost: 2
   - name: Slowest
-    cost: 100
+    cost: 5
   - name: 
     cost: 1
   - name: 

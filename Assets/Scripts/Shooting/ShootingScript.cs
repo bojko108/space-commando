@@ -7,7 +7,7 @@ public class ShootingScript : MonoBehaviour
     [Tooltip("Set bullet velocity")]
     public float Velocity = 150f;
     [Tooltip("Gun damage")]
-    public int DamagePerShot = 20;
+    public int Damage = 20;
     [Tooltip("Gun fire rate")]
     public float FireRate = 0.15f;
     [Tooltip("Gun fire sound")]
@@ -87,7 +87,7 @@ public class ShootingScript : MonoBehaviour
             bool runAway = enemy.tag.Equals(Resources.Tags.Worker);
 
             // harm the enemy
-            enemyHealth.TakeDamage(this.DamagePerShot, attack, runAway, hitPoint);
+            enemyHealth.TakeDamage(this.Damage, attack, runAway, hitPoint);
         }
     }
 

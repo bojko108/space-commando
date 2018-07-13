@@ -29,6 +29,7 @@ TagManager:
   - Drone
   - CommandScan
   - CommandAttack
+  - ServiceDrone
   layers:
   - Default
   - TransparentFX
