@@ -113,6 +113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShootingScript: {fileID: 0}
+  EnemiesLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!135 &135965943606575852
 SphereCollider:
   m_ObjectHideFlags: 1

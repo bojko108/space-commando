@@ -181,7 +181,7 @@ public class DroneScript : MonoBehaviour
             this.SetInAttackMode();
         }
     }
-
+    
     public void SetInPatrolMode()
     {
         if (this.animator.GetBool("InScan"))

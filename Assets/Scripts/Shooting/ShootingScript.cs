@@ -12,6 +12,8 @@ public class ShootingScript : MonoBehaviour
     public float FireRate = 0.15f;
     [Tooltip("Gun fire sound")]
     public AudioClip GunSound;
+    [Tooltip("Choose bullets type")]
+    public enumBulletType BulletType = enumBulletType.Laser;
 
     [HideInInspector]
     public float Timer;
@@ -45,6 +47,18 @@ public class ShootingScript : MonoBehaviour
 
         this.gunParticles.Stop();
         this.gunParticles.Play();
+    }
+
+    public IEnumerator FireBullet()
+    {
+        GameObject bullet = this.GetBullet(this.BulletType);
+
+        if (bullet != null)
+        {
+            yield return new WaitForSeconds(3f);
+
+            bullet.SetActive(false);
+        }
     }
 
     public GameObject GetBullet(enumBulletType type)

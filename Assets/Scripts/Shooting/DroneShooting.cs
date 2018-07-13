@@ -21,19 +21,19 @@ public class DroneShooting : ShootingScript
             // use this.transform instead of origin parameter
             base.Shoot(this.transform.position, rotation);
 
-            StartCoroutine(this.FirePlasmaBullet());
+            StartCoroutine(this.FireBullet());
         }
     }
 
-    private IEnumerator FirePlasmaBullet()
-    {
-        GameObject bullet = this.GetBullet(enumBulletType.Plasma);
+    //private IEnumerator FirePlasmaBullet()
+    //{
+    //    GameObject bullet = this.GetBullet(enumBulletType.Plasma);
 
-        if (bullet != null)
-        {
-            yield return new WaitForSeconds(3f);
+    //    if (bullet != null)
+    //    {
+    //        yield return new WaitForSeconds(3f);
 
-            bullet.SetActive(false);
-        }
-    }
+    //        bullet.SetActive(false);
+    //    }
+    //}
 }

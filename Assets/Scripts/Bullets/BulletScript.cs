@@ -6,20 +6,23 @@ public class BulletScript : MonoBehaviour
 {
     [HideInInspector]
     public ShootingScript ShootingScript;
-    private int enemiesLayer;    
+    public LayerMask EnemiesLayer;
+
     private Rigidbody bulletBody;
 
     public void OnAwake()
     {
         this.bulletBody = this.GetComponent<Rigidbody>();
-        this.enemiesLayer = LayerMask.NameToLayer(Resources.Layers.Enemies);
+        //this.enemiesLayer = LayerMask.NameToLayer(Resources.Layers.Enemies);
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         GameObject hit = collision.gameObject;
 
-        if (hit != null && hit.layer == this.enemiesLayer)
+        int layerIndex = Mathf.RoundToInt(Mathf.Log(this.EnemiesLayer.value, 2));
+
+        if (hit != null && hit.layer == layerIndex)
         {
             this.ShootingScript.HitEnemy(hit, collision.contacts[0].point);
         }

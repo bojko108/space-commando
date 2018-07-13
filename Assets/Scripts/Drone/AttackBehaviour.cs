@@ -5,14 +5,20 @@ using UnityEngine.AI;
 
 public class AttackBehaviour : BaseBehaviour
 {
+    [HideInInspector]
+    private DroneShooting shootingLogic;
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+
+        this.shootingLogic = this.Drone.GetComponentInChildren<DroneShooting>();
 
         this.DroneLogic.SignalLight.DronMode = enumDronMode.Attack;
 
         this.DroneLogic.StartAttackMode();
 
+        // to highlight command in UI
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.white;
 
         this.NavAgent.updateRotation = false;
@@ -56,7 +62,7 @@ public class AttackBehaviour : BaseBehaviour
             // shoot if target is visible
             if (this.CanSeeTarget(target))
             {
-                this.ShootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
+                this.shootingLogic.Shoot(this.DroneTransform.position, Quaternion.LookRotation(direction));
             }
         }
     }
@@ -65,6 +71,7 @@ public class AttackBehaviour : BaseBehaviour
     {
         this.NavAgent.updateRotation = true;
 
+        // to highlight command in UI
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.black;
 
         // used to manage drone battery

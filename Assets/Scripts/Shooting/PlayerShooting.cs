@@ -30,18 +30,6 @@ public class PlayerShooting : ShootingScript
     {
         base.Shoot(origin, rotation);
 
-        StartCoroutine(this.FireLaserBullet());
-    }
-
-    private IEnumerator FireLaserBullet()
-    {
-        GameObject bullet = this.GetBullet(enumBulletType.Laser);
-
-        if (bullet != null)
-        {
-            yield return new WaitForSeconds(3f);
-
-            bullet.SetActive(false);
-        }
+        StartCoroutine(this.FireBullet());
     }
 }

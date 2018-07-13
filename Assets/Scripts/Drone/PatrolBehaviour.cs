@@ -33,7 +33,7 @@ public class PatrolBehaviour : BaseBehaviour
                 this.NavAgent.speed = this.DroneLogic.AttackSpeed;
                 this.NavAgent.angularSpeed = this.DroneLogic.AttackAngularSpeed;
                 this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
-                this.NavAgent.SetDestination(this.PlayerTransform.position + this.PlayerTransform.forward * 5f);
+                this.NavAgent.SetDestination(this.PlayerTransform.position + this.PlayerTransform.forward * 10f);
             }
         }
     }
