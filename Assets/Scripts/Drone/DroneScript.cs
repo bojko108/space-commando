@@ -71,6 +71,9 @@ public class DroneScript : MonoBehaviour
     private AudioSource droneEngineAudioSource;
     private AudioSource droneAlarmAudioSource;
 
+    // reference to the trigger collider, responsible for detecting enemies
+    private SphereCollider detectionCollider;
+
     #endregion
 
     private void Awake()
@@ -81,9 +84,25 @@ public class DroneScript : MonoBehaviour
 
         this.animator = GetComponent<Animator>();
 
+        #region get reference to the trigger collider
+
+        SphereCollider[] colliders = GetComponents<SphereCollider>();
+        for(int i = 0;i<colliders.Length; i++)
+        {
+            if (colliders[i].isTrigger)
+            {
+                this.detectionCollider = colliders[i];
+                break;
+            }
+        }
+
+        #endregion
+
         this.SignalLight = GetComponentInChildren<DroneSignalLight>();
 
         this.ScannerScript = this.ScannerTransform.gameObject.GetComponent<ScannerScript>();
+
+        #region set drone alarm and engine sounds
 
         this.droneAlarmAudioSource = this.gameObject.AddComponent<AudioSource>();
         this.droneAlarmAudioSource.volume = 0.6f;
@@ -100,6 +119,8 @@ public class DroneScript : MonoBehaviour
         this.droneEngineAudioSource.playOnAwake = false;
         this.droneEngineAudioSource.clip = this.EngineSound;
         this.droneEngineAudioSource.Play();
+
+        #endregion
 
         this.batteryLevel = this.MaxBatteryLevel;
         this.DroneBatterySlider.minValue = 0;
@@ -179,7 +200,7 @@ public class DroneScript : MonoBehaviour
             this.ScannerScript.InteruptScan();
         }
 
-        //this.targets.Clear();
+        this.targets.Clear();
 
         this.animator.SetBool("InAttack", this.animator.GetBool("InAttack") == false);
         this.animator.SetBool("InScan", false);
@@ -319,9 +340,15 @@ public class DroneScript : MonoBehaviour
     {
         this.endAttackMode = false;
 
+        if (this.detectionCollider != null)
+        {
+            if (this.colliderExpand != null) StopCoroutine(this.colliderExpand);
+            this.colliderExpand = this.ColliderExpandEnumerator();
+            StartCoroutine(this.colliderExpand);
+        }
+
         if (this.batteryDraining != null) StopCoroutine(this.batteryDraining);
         this.batteryDraining = this.BatteryDrainingEnumerator();
-
         StartCoroutine(this.batteryDraining);
     }
 
@@ -329,9 +356,15 @@ public class DroneScript : MonoBehaviour
     {
         this.endAttackMode = true;
 
+        if (this.detectionCollider != null)
+        {
+            if (this.colliderShrink != null) StopCoroutine(this.colliderShrink);
+            this.colliderShrink = this.ColliderShrinkEnumerator();
+            StartCoroutine(this.colliderShrink);
+        }
+
         if (this.batteryCharging != null) StopCoroutine(this.batteryCharging);
         this.batteryCharging = this.BatteryChargingEnumerator();
-
         StartCoroutine(this.batteryCharging);
 
         this.SetInPatrolMode();
@@ -372,6 +405,44 @@ public class DroneScript : MonoBehaviour
         }
 
         // drone's battery is fully charged now
+    }
+
+    #endregion
+
+
+    #region Collider managers
+
+    private IEnumerator colliderExpand;
+    private IEnumerator colliderShrink;
+
+    private IEnumerator ColliderExpandEnumerator()
+    {
+        if (this.colliderShrink != null) StopCoroutine(this.colliderShrink);
+
+        // start expanding the collider
+        while (this.detectionCollider.radius < 100f)
+        {
+            if (Time.timeScale > 0f)
+            {
+                this.detectionCollider.radius += 10f;
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private IEnumerator ColliderShrinkEnumerator()
+    {
+        // start expanding the collider
+        while (this.detectionCollider.radius > 1f)
+        {
+            if (Time.timeScale > 0f)
+            {
+                this.detectionCollider.radius -= 10f;
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     #endregion

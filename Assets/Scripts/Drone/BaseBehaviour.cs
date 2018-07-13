@@ -37,6 +37,11 @@ public class BaseBehaviour : StateMachineBehaviour
         this.ShootingLogic = this.Drone.GetComponentInChildren<DroneShooting>();
 
         this.NavAgent = this.Drone.GetComponent<NavMeshAgent>();
+
+        // set all area costs to 1
+        this.NavAgent.SetAreaCost(3, 1f);
+        this.NavAgent.SetAreaCost(4, 1f);
+        this.NavAgent.SetAreaCost(5, 1f);
     }
 
     public bool IsCloseToPlayer()

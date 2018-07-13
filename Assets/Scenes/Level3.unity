@@ -2577,6 +2577,21 @@ Prefab:
       propertyPath: m_WalkableMask
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 135849839564686270, guid: a2080be0aad820b4d835b7fe0584e75c,
+        type: 2}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114339698014741100, guid: a2080be0aad820b4d835b7fe0584e75c,
+        type: 2}
+      propertyPath: PatrolAcceleration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114339698014741100, guid: a2080be0aad820b4d835b7fe0584e75c,
+        type: 2}
+      propertyPath: AttackAcceleration
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a2080be0aad820b4d835b7fe0584e75c, type: 2}
   m_IsPrefabParent: 0
@@ -3848,8 +3863,8 @@ MonoBehaviour:
   ManageEnemies:
     NumberOfBaseCommanders: 2
     NumberOfCommanders: 20
-    NumberOfSoldiers: 40
-    NumberOfWorkers: 8
+    NumberOfSoldiers: 30
+    NumberOfWorkers: 10
     BaseCommanderPrefab: {fileID: 1395132087209292, guid: 3c3ba9d9749d3404cb86934ef4249863,
       type: 2}
     CommanderPrefab: {fileID: 1457248732179882, guid: 83d72c1a4b49f5a4b813c6366323c4a8,
@@ -4198,6 +4213,36 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &953744164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1188343678251770, guid: 10cdf886c19b483428e1b686b9ec7d6e,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 953744165}
+  m_Layer: 0
+  m_Name: WSP 3
+  m_TagString: WorkerSpawnPoint
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &953744165
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4202405825506128, guid: 10cdf886c19b483428e1b686b9ec7d6e,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 953744164}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 518.3, y: 0, z: 129.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2024141283}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!21 &958118058
 Material:
   serializedVersion: 6
@@ -5140,7 +5185,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1184935870}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 220.2, y: 0, z: 430.1}
+  m_LocalPosition: {x: 223.2, y: 0, z: 504.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2024141283}
@@ -5421,7 +5466,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1341406272}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 305, y: 0, z: 77}
+  m_LocalPosition: {x: 321.2, y: 0, z: 37.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2024141283}
@@ -5752,7 +5797,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1464875630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 234.1, y: 0, z: 249.6}
+  m_LocalPosition: {x: 247.6, y: 0, z: 381.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2024141283}
@@ -6601,7 +6646,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1640232323}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 640.6, y: 0, z: 237.7}
+  m_LocalPosition: {x: 643.5, y: 0, z: 246}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2024141283}
@@ -8561,6 +8606,7 @@ Transform:
   - {fileID: 1341406273}
   - {fileID: 1636166464}
   - {fileID: 422013462}
+  - {fileID: 953744165}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8979,6 +9025,16 @@ Prefab:
       propertyPath: DamageImage
       value: 
       objectReference: {fileID: 1960364116}
+    - target: {fileID: 114362235311376200, guid: 35bf87788dbce1c429037e88df6cea1c,
+        type: 2}
+      propertyPath: StartingHealth
+      value: 200111
+      objectReference: {fileID: 0}
+    - target: {fileID: 114362235311376200, guid: 35bf87788dbce1c429037e88df6cea1c,
+        type: 2}
+      propertyPath: StartingOxygen
+      value: 150111
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 35bf87788dbce1c429037e88df6cea1c, type: 2}
   m_IsPrefabParent: 0
